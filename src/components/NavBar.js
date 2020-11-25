@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const NavBar = () => {
+const NavBar = ({ user }) => {
   return (
     <div style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
       <NavLink 
@@ -22,18 +22,33 @@ const NavBar = () => {
       >
         My Crags
       </NavLink>
-      <NavLink 
+      {(user === null) ? 
+      [<NavLink 
         style={{ marginRight: '10px' }} 
         to="/log-in"
       >
         Log In
-      </NavLink>
+      </NavLink>, 
       <NavLink 
         style={{ marginRight: '10px' }} 
         to="/sign-up"
       >
         Sign Up
-      </NavLink>
+      </NavLink>] :
+      [<NavLink 
+        style={{ marginRight: '10px' }} 
+        key={user}
+        to={`/users/${user}`}
+      >
+        View Profile
+      </NavLink>, 
+      <NavLink 
+        style={{ marginRight: '10px' }} 
+        to="/log-out"
+      >
+        Log Out
+      </NavLink>]
+    }
     </div>
   );
 }

@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class CragCard extends Component {
-    render () {
-        return (
-            <div>
-
-            </div>
-        )
-    }
+const CragCard = ({ crag }) => {
+    return (
+        <div>
+            <h2>{crag.name}</h2>
+        </div>
+    )
 }
 
 export default CragCard
