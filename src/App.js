@@ -3,10 +3,10 @@ import './App.css';
 import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'; 
 import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
-import CragsContainer from './components/SearchBar'
+import CragsContainer from './containers/CragsContainer'
 import LogIn from './components/LogIn'
 import SignUp from './components/SignUp'
-// import NavLink from 'react-router-dom/NavLink';
+// import { browserHistory } from 'react-router'
 
 const API = 'http://localhost:3000';
 
@@ -21,6 +21,7 @@ class App extends Component {
 
   handleSearchSubmit = e => {
     e.preventDefault()
+
     fetch(API + `/get_areas`, {
       method: "POST",
       headers: {
@@ -34,7 +35,6 @@ class App extends Component {
       .then(res => res.json())
       .then(crags => {
         this.setState({crags: crags, searchTerm: e.target[0].value});
-        <Redirect to={`/crags/${this.state.searchTerm}`} />
       })
   }
 
@@ -104,15 +104,33 @@ class App extends Component {
     })
   }
 
+  handleCragClick = (crag) => {
+    fetch(API + `/get_areas`, {
+      method: "POST",
+      headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          name: crag
+      })
+      })
+      .then(res => res.json())
+      .then(console.log)
+  }
+
   render() {
     return (
       <Router>
         <div className="App">
           <NavBar user={this.state.user}/>
-          <Route path='/' render={() => <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user}/>} />
+          <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user} searchTerm={this.state.searchTerm} />
+          <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} searchTerm={this.state.searchTerm}/>
+          {/* <Route path='/' render={() => <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user} searchTerm={this.state.searchTerm} />} /> */}
           <Route path='/log-in' render={() => <LogIn handleLogIn={this.handleLogIn} />} />
           <Route path='/sign-up' render={() => <SignUp handleSignUp={this.handleSignUp} />} />
-          {(this.state.searchTerm !== "") ? <Route path={`/crags/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>}
+          {/* <Route path={`/${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags}/>} /> */}
+          {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
         </div>
       </Router>
     );
