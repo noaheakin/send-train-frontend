@@ -1,10 +1,10 @@
 import React from 'react';
 import CragCard from '../components/CragCard';
 
-const CragsContainer = ({ handleClick, searchTerm, crags }) => {
+const CragsContainer = ({ handleClick, crags }) => {
     return (
         <div className="cragContainer">
-            {crags.map(crag => <CragCard crag={crag} handleClick={handleClick} searchTerm={searchTerm}/>)}
+            {crags.map(crag => <CragCard key={crag.name} crag={crag} handleClick={handleClick} />)}
         </div>
     )
 }

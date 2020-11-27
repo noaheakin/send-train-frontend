@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const SearchBar = ( { handleSearchSubmit, user, searchTerm } ) => {
+const SearchBar = ( { handleSearchSubmit, user, searchTerm, history } ) => {
+    console.log(history)
     return (
         <div>
             <div>{(!user) ? null : <h2>Welcome, {user}!</h2>}
