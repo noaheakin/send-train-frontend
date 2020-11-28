@@ -1,7 +1,6 @@
 import React from 'react';
 
 const ClimbCard = ({ handleClick, climb }) => {
-    debugger
     return (
         <div onClick={() => handleClick(climb)} className="climbCard">
             <h2>{climb.name}</h2>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Route, Link, Redirect, Switch, withRouter } from 'react-router-dom'; 
+import { Route, Link, Switch, withRouter } from 'react-router-dom'; 
 import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
 import CragsContainer from './containers/CragsContainer'
@@ -122,7 +122,7 @@ class App extends Component {
       .then(res => res.json())
       .then(climbs => {
         this.setState({climbs: climbs.routes})
-        this.props.history.push(`crag/${crag.name.split(' ').join('-')}`)
+        this.props.history.push(`/crag/${crag.name.split(' ').join('-')}`)
     })
   }
 
@@ -138,10 +138,10 @@ class App extends Component {
           {/* <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} /> */}
           <Switch>
           {/* <Route path='/' render={() => <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user} searchTerm={this.state.searchTerm} />} /> */}
-          <Route path='/log-in' render={() => <LogIn handleLogIn={this.handleLogIn} />} />
-          <Route path='/sign-up' render={() => <SignUp handleSignUp={this.handleSignUp} />} />
-          <Route path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick}/>} />
-          <Route path='/crag/:crag_name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick}/>} />
+          <Route exact path='/log-in' render={() => <LogIn handleLogIn={this.handleLogIn} />} />
+          <Route exact path='/sign-up' render={() => <SignUp handleSignUp={this.handleSignUp} />} />
+          <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick}/>} />
+          <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick}/>} />
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
           </Switch>
         </div>
