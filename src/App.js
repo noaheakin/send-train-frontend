@@ -4,6 +4,7 @@ import { Route, Link, Redirect, Switch, withRouter } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
 import CragsContainer from './containers/CragsContainer'
+import ClimbsContainer from './containers/ClimbsContainer'
 import LogIn from './components/LogIn'
 import SignUp from './components/SignUp'
 // import { browserHistory } from 'react-router'
@@ -16,6 +17,7 @@ class App extends Component {
     user: null,
     token: null,
     crags: [],
+    climbs: [],
     searchTerm: ""
   }
 
@@ -35,7 +37,7 @@ class App extends Component {
       .then(res => res.json())
       .then(crags => {
         this.setState({crags: crags, searchTerm: e.target[0].value});
-        this.props.history.push(`crags/${this.state.searchTerm}`)
+        this.props.history.push(`/search?=${this.state.searchTerm}`)
       })
   }
 
@@ -118,7 +120,14 @@ class App extends Component {
       })
       })
       .then(res => res.json())
-      .then(console.log)
+      .then(climbs => {
+        this.setState({climbs: climbs.routes})
+        this.props.history.push(`crag/${crag.name.split(' ').join('-')}`)
+    })
+  }
+
+  handleClimbClick = (climb) => {
+    console.log(`This climb is called ${climb.name}`)
   }
 
   render() {
@@ -126,12 +135,13 @@ class App extends Component {
         <div className="App">
           <NavBar user={this.state.user}/>
           <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user} searchTerm={this.state.searchTerm} props={this.props}/>
-          <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} />
+          {/* <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} /> */}
           <Switch>
           {/* <Route path='/' render={() => <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user} searchTerm={this.state.searchTerm} />} /> */}
           <Route path='/log-in' render={() => <LogIn handleLogIn={this.handleLogIn} />} />
           <Route path='/sign-up' render={() => <SignUp handleSignUp={this.handleSignUp} />} />
-          <Route path='crags/:search' render={() => <CragsContainer crags={this.state.crags}/>} />
+          <Route path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick}/>} />
+          <Route path='/crag/:crag_name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick}/>} />
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
           </Switch>
         </div>
