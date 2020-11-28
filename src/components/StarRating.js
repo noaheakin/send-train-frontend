@@ -12,12 +12,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function HalfRating({stars}) {
+export default function HalfRating({stars, starVotes}) {
 const classes = useStyles();
 console.log(stars)
   return (
     <div className="starRating">
-      <Rating name="half-rating-read" defaultValue={stars} precision={0.1} readOnly />
+      <Rating name="half-rating-read" defaultValue={stars} precision={0.1} readOnly /><p>(from {starVotes} votes)</p>
     </div>
   );
 }

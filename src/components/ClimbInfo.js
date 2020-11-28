@@ -5,7 +5,8 @@ const ClimbInfo = ({ climb }) => {
     return (
         <div className="selectedClimb">
             <h2>{climb.name}</h2><h3><em>{climb.rating}</em></h3>
-            <StarRating stars={climb.stars} />
+            <StarRating stars={climb.stars} starVotes={climb.starVotes}/>
+            <img src={climb.imgMedium} />
         </div>
     )
 }
