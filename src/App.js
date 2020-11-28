@@ -3,11 +3,11 @@ import './App.css';
 import { Route, Link, Switch, withRouter } from 'react-router-dom'; 
 import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
-import CragsContainer from './containers/CragsContainer'
-import ClimbsContainer from './containers/ClimbsContainer'
-import LogIn from './components/LogIn'
-import SignUp from './components/SignUp'
-// import { browserHistory } from 'react-router'
+import CragsContainer from './containers/CragsContainer';
+import ClimbsContainer from './containers/ClimbsContainer';
+import ClimbInfo from './components/ClimbInfo';
+import LogIn from './components/LogIn';
+import SignUp from './components/SignUp';
 
 const API = 'http://localhost:3000';
 
@@ -18,7 +18,8 @@ class App extends Component {
     token: null,
     crags: [],
     climbs: [],
-    searchTerm: ""
+    searchTerm: "",
+    selectedClimb: ""
   }
 
   handleSearchSubmit = e => {
@@ -127,7 +128,8 @@ class App extends Component {
   }
 
   handleClimbClick = (climb) => {
-    console.log(`This climb is called ${climb.name}`)
+    this.setState({selectedClimb: climb})
+    this.props.history.push(`/climb/${climb.name.split(' ').join('-')}`)
   }
 
   render() {
@@ -142,6 +144,7 @@ class App extends Component {
           <Route exact path='/sign-up' render={() => <SignUp handleSignUp={this.handleSignUp} />} />
           <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick}/>} />
           <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick}/>} />
+          <Route exact path='/climb/:name' render={() => <ClimbInfo climb={this.state.selectedClimb} />} />
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
           </Switch>
         </div>
