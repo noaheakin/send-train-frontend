@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Route, Link, Switch, withRouter } from 'react-router-dom'; 
+import { Route, Switch, withRouter } from 'react-router-dom'; 
 import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
 import CragsContainer from './containers/CragsContainer';
@@ -8,6 +8,7 @@ import ClimbsContainer from './containers/ClimbsContainer';
 import ClimbInfo from './components/ClimbInfo';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
+import Home from './components/Home';
 
 const API = 'http://localhost:3000';
 
@@ -74,7 +75,7 @@ class App extends Component {
     .then(res => res.json())
     .then(data => {
       this.setState({user: data.user.username, token: data.token}, ()  =>{
-        <Link to={`/${data.user.username}`} />
+        this.props.history.push(`/user/${data.user.username}`)
       }
         )
     })
@@ -135,11 +136,12 @@ class App extends Component {
   render() {
     return (
         <div className="App">
-          <NavBar user={this.state.user}/>
+          <NavBar user={this.state.user} handleLogOut={this.handleLogOut}/>
           <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user} searchTerm={this.state.searchTerm} props={this.props}/>
           {/* <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} /> */}
           <Switch>
           {/* <Route path='/' render={() => <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user} searchTerm={this.state.searchTerm} />} /> */}
+          <Route exact path='/' component={Home} />
           <Route exact path='/log-in' render={() => <LogIn handleLogIn={this.handleLogIn} />} />
           <Route exact path='/sign-up' render={() => <SignUp handleSignUp={this.handleSignUp} />} />
           <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick}/>} />

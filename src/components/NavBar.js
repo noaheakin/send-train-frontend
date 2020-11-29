@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const NavBar = ({ user }) => {
+const NavBar = ({ user, handleLogOut }) => {
   return (
     <div style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
       <NavLink 
@@ -10,18 +10,18 @@ const NavBar = ({ user }) => {
       >
         Home
       </NavLink>
-      <NavLink 
+      {(user) ? [<NavLink 
         style={{ marginRight: '10px' }} 
         to="/tick-lists"
       >
         Tick List
-      </NavLink>
+      </NavLink>,
       <NavLink 
         style={{ marginRight: '10px' }} 
         to="/my-crags"
       >
         My Crags
-      </NavLink>
+      </NavLink>] : null}
       {(user === null) ? 
       [<NavLink 
         style={{ marginRight: '10px' }} 
@@ -42,9 +42,9 @@ const NavBar = ({ user }) => {
       >
         View Profile
       </NavLink>, 
-      <NavLink 
+      <NavLink onClick={handleLogOut}
         style={{ marginRight: '10px' }} 
-        to="/log-out"
+        to="/"
       >
         Log Out
       </NavLink>]
