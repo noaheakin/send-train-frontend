@@ -18,6 +18,7 @@ class App extends Component {
     user: null,
     token: null,
     crags: [],
+    userCrags: [],
     climbs: [],
     searchTerm: "",
     selectedClimb: ""
@@ -74,10 +75,9 @@ class App extends Component {
     })
     .then(res => res.json())
     .then(data => {
-      this.setState({user: data.user.username, token: data.token}, ()  =>{
+      this.setState({user: data.user.username, token: data.token, userCrags: data.user.user_crags}, ()  =>{
         this.props.history.push(`/user/${data.user.username}`)
-      }
-        )
+      })
     })
   }
 

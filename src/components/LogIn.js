@@ -30,7 +30,7 @@ class LogIn extends Component {
                     <label htmlFor="password">Password:</label>
                     <input type="password" name="password" value={this.state.password} onChange={this.handleChange} required /><br></br><br></br>
                     <input type="submit" value="Log In"></input>
-                    <Link to='/sign-up'>Not a User? Sign Up!</Link>
+                    <Link to='/sign-up'> Not a User? Sign Up!</Link>
                 </form>
             </div>
         )
