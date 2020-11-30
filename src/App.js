@@ -198,7 +198,8 @@ class App extends Component {
         "Content-Type": "application/json"
     }})
     this.setState({
-      userCrags: this.state.userCrags.filter(c => c.crag_id !== crag.id)
+      userCrags: this.state.userCrags.filter(c => c.crag_id !== crag.id),
+      displayUserCrags: this.state.displayUserCrags.filter(c => c !== crag)
     })
   }
 
