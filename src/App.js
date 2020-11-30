@@ -4,6 +4,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
 import CragsContainer from './containers/CragsContainer';
+import UserCragsContainer from './containers/UserCragsContainer';
 import ClimbsContainer from './containers/ClimbsContainer';
 import ClimbInfo from './components/ClimbInfo';
 import LogIn from './components/LogIn';
@@ -19,6 +20,7 @@ class App extends Component {
     token: null,
     crags: [],
     userCrags: [],
+    displayUserCrags: [],
     climbs: [],
     searchTerm: "",
     selectedClimb: ""
@@ -42,6 +44,30 @@ class App extends Component {
         this.setState({crags: crags, searchTerm: e.target[0].value});
         this.props.history.push(`/search?=${this.state.searchTerm}`)
       })
+  }
+
+  fetchUserCrags = () => {
+    console.log("started")
+    this.state.userCrags.map(crag => (
+      fetch(`http://localhost:3000/crags/${crag.crag_id}`, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        })
+        .then(res => res.json())
+        .then(crag => this.setState({
+          displayUserCrags: [...this.state.displayUserCrags, crag]
+        }))
+        // .then(favorite => {
+        //   this.state.coolAnimals.includes(favorite) ? this.setState({
+        //     coolAnimals: this.state.coolAnimals
+        //   }) :
+        //   this.setState({
+        //     coolAnimals: [...this.state.coolAnimals, favorite]
+        // })})
+    ))
   }
 
   handleLogIn = info => {
@@ -133,10 +159,14 @@ class App extends Component {
     this.props.history.push(`/climb/${climb.name.split(' ').join('-')}`)
   }
 
+  handleUserCragClick = (crag) => {
+    console.log(`Clicked on ${crag}`)
+  }
+
   render() {
     return (
         <div className="App">
-          <NavBar user={this.state.user} handleLogOut={this.handleLogOut}/>
+          <NavBar user={this.state.user} handleLogOut={this.handleLogOut} fetchUserCrags={this.fetchUserCrags}/>
           <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user} searchTerm={this.state.searchTerm} props={this.props}/>
           {/* <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} /> */}
           <Switch>
@@ -147,6 +177,7 @@ class App extends Component {
           <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick}/>} />
           <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick}/>} />
           <Route exact path='/climb/:name' render={() => <ClimbInfo climb={this.state.selectedClimb} />} />
+          <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.displayUserCrags} handleClick={this.handleUserCragClick} />} />
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
           </Switch>
         </div>

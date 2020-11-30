@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const NavBar = ({ user, handleLogOut }) => {
+const NavBar = ({ user, handleLogOut, fetchUserCrags }) => {
   return (
     <div style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
       <NavLink 
@@ -12,13 +12,13 @@ const NavBar = ({ user, handleLogOut }) => {
       </NavLink>
       {(user) ? [<NavLink 
         style={{ marginRight: '10px' }} 
-        to="/tick-lists"
+        to={`/${user}/tick-lists`}
       >
         Tick List
       </NavLink>,
-      <NavLink 
+      <NavLink onClick={() => fetchUserCrags()}
         style={{ marginRight: '10px' }} 
-        to="/my-crags"
+        to={`/${user}/my-crags`}
       >
         My Crags
       </NavLink>] : null}
@@ -38,7 +38,7 @@ const NavBar = ({ user, handleLogOut }) => {
       [<NavLink 
         style={{ marginRight: '10px' }} 
         key={user}
-        to={`/users/${user}`}
+        to={`/${user}/profile`}
       >
         View Profile
       </NavLink>, 
