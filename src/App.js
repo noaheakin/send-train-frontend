@@ -48,6 +48,9 @@ class App extends Component {
 
   fetchUserCrags = () => {
     console.log("started")
+    this.setState({
+      displayUserCrags: []
+    })
     this.state.userCrags.map(crag => (
       fetch(`http://localhost:3000/crags/${crag.crag_id}`, {
         method: "GET",
@@ -59,15 +62,8 @@ class App extends Component {
         .then(res => res.json())
         .then(crag => this.setState({
           displayUserCrags: [...this.state.displayUserCrags, crag]
-        }))
-        // .then(favorite => {
-        //   this.state.coolAnimals.includes(favorite) ? this.setState({
-        //     coolAnimals: this.state.coolAnimals
-        //   }) :
-        //   this.setState({
-        //     coolAnimals: [...this.state.coolAnimals, favorite]
-        // })})
-    ))
+        })
+    )))
   }
 
   handleLogIn = info => {
@@ -83,7 +79,13 @@ class App extends Component {
   handleLogOut = () => {
     this.setState({
       user: null,
-      token: null
+      token: null,
+      crags: [],
+      userCrags: [],
+      displayUserCrags: [],
+      climbs: [],
+      searchTerm: "",
+      selectedClimb: ""
     })
   }
 
@@ -163,6 +165,16 @@ class App extends Component {
     console.log(`Clicked on ${crag}`)
   }
 
+  handleLocalClick = (e, crag) => {
+    e.stopPropagation()
+    console.log("local is working")
+  }
+
+  handleFavoriteClick = (e, crag) => {
+    e.stopPropagation()
+    console.log("favorite is working")
+  }
+
   render() {
     return (
         <div className="App">
@@ -174,10 +186,10 @@ class App extends Component {
           <Route exact path='/' component={Home} />
           <Route exact path='/log-in' render={() => <LogIn handleLogIn={this.handleLogIn} />} />
           <Route exact path='/sign-up' render={() => <SignUp handleSignUp={this.handleSignUp} />} />
-          <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick}/>} />
+          <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} handleLocalClick={this.handleLocalClick} handleFavoriteClick={this.handleFavoriteClick}/>} />
           <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick}/>} />
           <Route exact path='/climb/:name' render={() => <ClimbInfo climb={this.state.selectedClimb} />} />
-          <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.displayUserCrags} handleClick={this.handleUserCragClick} />} />
+          <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.displayUserCrags} handleClick={this.handleUserCragClick}/>} />
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
           </Switch>
         </div>
