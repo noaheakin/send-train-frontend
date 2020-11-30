@@ -17,6 +17,7 @@ class App extends Component {
 
   state = {
     user: null,
+    userID: null,
     token: null,
     crags: [],
     userCrags: [],
@@ -79,6 +80,7 @@ class App extends Component {
   handleLogOut = () => {
     this.setState({
       user: null,
+      userID: null,
       token: null,
       crags: [],
       userCrags: [],
@@ -103,7 +105,7 @@ class App extends Component {
     })
     .then(res => res.json())
     .then(data => {
-      this.setState({user: data.user.username, token: data.token, userCrags: data.user.user_crags}, ()  =>{
+      this.setState({user: data.user.username, userID: data.user.id, token: data.token, userCrags: data.user.user_crags}, ()  =>{
         this.props.history.push(`/user/${data.user.username}`)
       })
     })
@@ -167,12 +169,37 @@ class App extends Component {
 
   handleAddFavorite = (e, crag) => {
     e.stopPropagation()
-    console.log("add favorite")
+    console.log(crag.id)
+    fetch(API + `/user_crags`, {
+      method: "POST",
+      headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          user_id: this.state.userID,
+          crag_id: crag.id
+      })
+      })
+      .then(res => res.json())
+      .then(crag => this.setState({
+        userCrags: [...this.state.userCrags, crag]
+      }))
   }
 
   handleDeleteFavorite = (e, crag) => {
+    let targetCrag = this.state.userCrags.filter(c => c.crag_id === crag.id)
+    console.log(targetCrag[0].id)
     e.stopPropagation()
-    console.log("delete favorite")
+    fetch(API + `/user_crags/${targetCrag[0].id}`, {
+      method: "DELETE",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    }})
+    this.setState({
+      userCrags: this.state.userCrags.filter(c => c.crag_id !== crag.id)
+    })
   }
 
   render() {
