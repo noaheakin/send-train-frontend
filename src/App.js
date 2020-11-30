@@ -161,18 +161,18 @@ class App extends Component {
     this.props.history.push(`/climb/${climb.name.split(' ').join('-')}`)
   }
 
-  handleUserCragClick = (crag) => {
-    console.log(`Clicked on ${crag}`)
+  // handleUserCragClick = (crag) => {
+  //   console.log(`Clicked on ${crag}`)
+  // }
+
+  handleAddFavorite = (e, crag) => {
+    e.stopPropagation()
+    console.log("add favorite")
   }
 
-  handleLocalClick = (e, crag) => {
+  handleDeleteFavorite = (e, crag) => {
     e.stopPropagation()
-    console.log("local is working")
-  }
-
-  handleFavoriteClick = (e, crag) => {
-    e.stopPropagation()
-    console.log("favorite is working")
+    console.log("delete favorite")
   }
 
   render() {
@@ -186,10 +186,10 @@ class App extends Component {
           <Route exact path='/' component={Home} />
           <Route exact path='/log-in' render={() => <LogIn handleLogIn={this.handleLogIn} />} />
           <Route exact path='/sign-up' render={() => <SignUp handleSignUp={this.handleSignUp} />} />
-          <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} handleLocalClick={this.handleLocalClick} handleFavoriteClick={this.handleFavoriteClick}/>} />
+          <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} handleAddFavorite={this.handleAddFavorite} handleDeleteFavorite={this.handleDeleteFavorite} userCrags={this.state.userCrags} />} />
           <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick}/>} />
           <Route exact path='/climb/:name' render={() => <ClimbInfo climb={this.state.selectedClimb} />} />
-          <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.displayUserCrags} handleClick={this.handleUserCragClick}/>} />
+          <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.displayUserCrags} handleClick={this.handleCragClick} handleDeleteFavorite={this.handleDeleteFavorite} />} />
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
           </Switch>
         </div>
