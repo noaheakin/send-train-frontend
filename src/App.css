@@ -80,3 +80,23 @@
   transform: scale(1.05);
   cursor:default;
 }
+
+.range-slider {
+  padding-top: 50px;
+}
+
+.select-discipline {
+  display: flex;
+  float: left;
+  width: 20px;
+  height: 100%;
+  margin: auto;
+}
+
+.slider {
+  float: left;
+  width: 20px;
+  height: 100%;
+  margin-left: 30px;
+  margin-right: 30px;
+}
