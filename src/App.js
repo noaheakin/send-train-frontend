@@ -214,10 +214,10 @@ class App extends Component {
           <Route exact path='/' component={Home} />
           <Route exact path='/log-in' render={() => <LogIn handleLogIn={this.handleLogIn} />} />
           <Route exact path='/sign-up' render={() => <SignUp handleSignUp={this.handleSignUp} />} />
-          <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} handleAddFavorite={this.handleAddFavorite} handleDeleteFavorite={this.handleDeleteFavorite} userCrags={this.state.userCrags} />} />
+          <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} handleAddFavorite={this.handleAddFavorite} handleDeleteFavorite={this.handleDeleteFavorite} userCrags={this.state.userCrags} user={this.state.user}/>} />
           <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick}/>} />
           <Route exact path='/climb/:name' render={() => <ClimbInfo climb={this.state.selectedClimb} />} />
-          <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.displayUserCrags} handleClick={this.handleCragClick} handleDeleteFavorite={this.handleDeleteFavorite} />} />
+          <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.displayUserCrags} handleClick={this.handleCragClick} handleDeleteFavorite={this.handleDeleteFavorite} user={this.state.user}/>} />
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
           </Switch>
         </div>
