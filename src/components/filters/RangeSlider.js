@@ -3,6 +3,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles({
   root: {
@@ -28,6 +29,9 @@ export default function RangeSlider() {
       <Typography className="slider-label" gutterBottom>
         Difficulty Range
       </Typography>
+      <Grid container spacing={2}>
+        <Grid item>V0</Grid>
+      <Grid item xs>
       <Slider
         className="slider"
         value={value}
@@ -35,11 +39,16 @@ export default function RangeSlider() {
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
         getAriaValueText={valuetext}
+        valueLabelDisplay="on"
         step={1}
         marks
         min={0}
         max={17}
+        disabled
       />
+      </Grid>
+      <Grid item>V17</Grid>
+      </Grid>
       </div>
     </div>
   );
