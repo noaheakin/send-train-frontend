@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -25,7 +24,6 @@ export default function RangeSlider() {
 
   return (
     <div className={classes.root}>
-      <div className="range-slider">
       <Typography className="slider-label" gutterBottom>
         Difficulty Range
       </Typography>
@@ -44,12 +42,11 @@ export default function RangeSlider() {
         marks
         min={0}
         max={17}
-        disabled
+        
       />
       </Grid>
-      <Grid item>V17</Grid>
+        <Grid item>V17</Grid>
       </Grid>
-      </div>
     </div>
   );
 }

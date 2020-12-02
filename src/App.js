@@ -205,13 +205,86 @@ class App extends Component {
 
   addWishClimb = (e, climb) => {
     e.stopPropagation()
-    console.log(`I want to climb ${climb.name}`)
+    console.log(climb)
+    fetch(API + `/climbs`, {
+      method: "POST",
+      headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          mp_id: climb.id,
+          name: climb.name
+      })
+      })
+      .then(res => res.json())
+      .then(console.log)
+      // .then(climb => this.createWishListClimb(climb))
   }
+
+  // createWishListClimb = (climb) => {
+  //   fetch('http://localhost:3000/target_climbs', {
+  //     method: "POST",
+  //     headers: {
+  //       "Accept": "application/json",
+  //       "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify({
+  //       user_id: this.state.userID,
+  //       climb_id: climb.id
+  //     })
+  //   })
+  //   .then(res => res.json())
+  //   .then(favorite => {if(!this.state.currentUserFavorites.find(favorite => favorite.organism_id === organism.id)) {
+  //     alert("Successfully added to favorites!")
+  //     this.setState({
+  //     currentUserFavorites: [...this.state.currentUserFavorites, favorite]
+  //   })} 
+  //   }
+  //   )
+  // }
 
   addCompletedClimb = (e, climb) => {
     e.stopPropagation()
     console.log(`I climbed ${climb.name}`)
+    fetch(API + `/climbs`, {
+      method: "POST",
+      headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          mp_id: climb.id,
+          name: climb.name
+      })
+      })
+      .then(res => res.json())
+      .then(climb => this.createCompletedUserClimb(climb))
   }
+
+  createCompletedUserClimb = (climb) => {
+    fetch('http://localhost:3000/completed_climbs', {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        user_id: this.state.userID,
+        climb_id: climb.id
+      })
+    })
+    .then(res => res.json())
+    // .then(favorite => {if(!this.state.currentUserFavorites.find(favorite => favorite.organism_id === organism.id)) {
+    //   alert("Successfully added to favorites!")
+    //   this.setState({
+    //   currentUserFavorites: [...this.state.currentUserFavorites, favorite]
+    // })} 
+    // }
+    // )
+    .then(console.log)
+  }
+
 
   render() {
     return (
@@ -225,7 +298,7 @@ class App extends Component {
           <Route exact path='/log-in' render={() => <LogIn handleLogIn={this.handleLogIn} />} />
           <Route exact path='/sign-up' render={() => <SignUp handleSignUp={this.handleSignUp} />} />
           <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} handleAddFavorite={this.handleAddFavorite} handleDeleteFavorite={this.handleDeleteFavorite} userCrags={this.state.userCrags} user={this.state.user}/>} />
-          <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} />} />
+          <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} user={this.state.user}/>} />
           <Route exact path='/climb/:name' render={() => <ClimbInfo climb={this.state.selectedClimb} />} />
           <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.displayUserCrags} handleClick={this.handleCragClick} handleDeleteFavorite={this.handleDeleteFavorite} user={this.state.user}/>} />
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
