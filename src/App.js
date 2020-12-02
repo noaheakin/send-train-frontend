@@ -5,6 +5,7 @@ import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
 import CragsContainer from './containers/CragsContainer';
 import UserCragsContainer from './containers/UserCragsContainer';
+import CompletedClimbsContainer from './containers/CompletedClimbsContainer';
 import ClimbsContainer from './containers/ClimbsContainer';
 import ClimbInfo from './components/ClimbInfo';
 import LogIn from './components/LogIn';
@@ -21,6 +22,8 @@ class App extends Component {
     token: null,
     crags: [],
     userCrags: [],
+    completedClimbs: [],
+    displayCompletedClimbs: [],
     displayUserCrags: [],
     climbs: [],
     searchTerm: "",
@@ -67,6 +70,28 @@ class App extends Component {
     )))
   }
 
+  fetchCompletedClimbs = () => {
+    console.log("started")
+    this.setState({
+      displayCompletedClimbs: []
+    })
+    this.state.completedClimbs.map(climb => (
+      fetch(`http://localhost:3000/climbs/${climb.climb_id}`, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        })
+        .then(res => res.json())
+        .then(climb => this.setState({
+          displayCompletedClimbs: [...this.state.displayCompletedClimbs, climb]
+        })
+    )))
+  }
+
+  // fetch with climb ID's to MP - prob in backend during fetchCompletedClimbs GET
+
   handleLogIn = info => {
     console.log('login')
     this.logInAuthFetch(info)
@@ -84,6 +109,8 @@ class App extends Component {
       token: null,
       crags: [],
       userCrags: [],
+      completedClimbs: [],
+      displayCompletedClimbs: [],
       displayUserCrags: [],
       climbs: [],
       searchTerm: "",
@@ -105,7 +132,7 @@ class App extends Component {
     })
     .then(res => res.json())
     .then(data => {
-      this.setState({user: data.user.username, userID: data.user.id, token: data.token, userCrags: data.user.user_crags}, ()  =>{
+      this.setState({user: data.user.username, userID: data.user.id, token: data.token, userCrags: data.user.user_crags, completedClimbs: data.user.completed_climbs}, ()  =>{
         this.props.history.push(`/user/${data.user.username}`)
       })
     })
@@ -289,7 +316,7 @@ class App extends Component {
   render() {
     return (
         <div className="App">
-          <NavBar user={this.state.user} handleLogOut={this.handleLogOut} fetchUserCrags={this.fetchUserCrags}/>
+          <NavBar user={this.state.user} handleLogOut={this.handleLogOut} fetchUserCrags={this.fetchUserCrags} fetchCompletedClimbs={this.fetchCompletedClimbs}/>
           <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user} searchTerm={this.state.searchTerm} props={this.props} climbs={this.state.climbs}/>
           {/* <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} /> */}
           <Switch>
@@ -301,6 +328,7 @@ class App extends Component {
           <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} user={this.state.user}/>} />
           <Route exact path='/climb/:name' render={() => <ClimbInfo climb={this.state.selectedClimb} />} />
           <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.displayUserCrags} handleClick={this.handleCragClick} handleDeleteFavorite={this.handleDeleteFavorite} user={this.state.user}/>} />
+          <Route exact path={`/${this.state.user}/climbs-log`} render={() => <CompletedClimbsContainer climbs={this.state.userCompletedClimbs} handleClick={this.handleClimbClick} user={this.state.user}/>} />
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
           </Switch>
         </div>
