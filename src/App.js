@@ -75,19 +75,52 @@ class App extends Component {
     this.setState({
       displayCompletedClimbs: []
     })
-    this.state.completedClimbs.map(climb => (
+    let climbIDs = this.state.completedClimbs.map(climb => (
       fetch(`http://localhost:3000/climbs/${climb.climb_id}`, {
         method: "GET",
         headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
+          "Accept": "application/json",
+          "Content-Type": "application/json"
         },
+      })
+    ))
+    Promise.all(climbIDs)
+      .then(res => {
+        return Promise.all(res.map(data => data.json()))
+      })
+      .then(climbs => {this.setState({
+        displayCompletedClimbs: climbs
         })
-        .then(res => res.json())
-        .then(climb => this.setState({
-          displayCompletedClimbs: [...this.state.displayCompletedClimbs, climb]
-        })
-    )))
+        this.fetchCompletedClimbsByID()  
+      }
+    )
+  }
+
+  fetchCompletedClimbsByID = () => {
+    debugger
+    let climb_ids = this.state.displayCompletedClimbs.map(climb => climb.mp_id).join(',')
+    console.log(climb_ids)
+    fetch(API + `/get_climbs_by_id`, {
+      method: "POST",
+      headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          climb_ids: climb_ids
+      })
+      })
+      .then(res => res.json())
+      .then(console.log)
+      // fetch(`http://localhost:3000/climbs/${climb.climb_id}`, {
+      //   method: "GET",
+      //   headers: {
+      //       "Accept": "application/json",
+      //       "Content-Type": "application/json"
+      //   },
+      //   })
+      //   .then(res => res.json())
+      //   .then(
   }
 
   // fetch with climb ID's to MP - prob in backend during fetchCompletedClimbs GET

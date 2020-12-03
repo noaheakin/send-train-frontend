@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 export default function NativeSelects() {
   const classes = useStyles();
   const [state, setState] = React.useState({
+    discipline: ""
   });
 
   const handleChange = (event) => {
@@ -29,6 +30,7 @@ export default function NativeSelects() {
     });
   };
 
+  console.log(state.discipline)
   return (
     <FormControl className={classes.formControl}>
         <InputLabel htmlFor="discipline-native-helper">Select Type</InputLabel>
