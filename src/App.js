@@ -202,7 +202,9 @@ class App extends Component {
       },
       })
       .then(res => res.json())
-      .then(console.log)
+      .then(climbs => this.setState({
+        displayCompletedClimbs: climbs
+      }))
       // fetch(`http://localhost:3000/climbs/${climb.climb_id}`, {
       //   method: "GET",
       //   headers: {
@@ -319,7 +321,6 @@ class App extends Component {
       })
       .then(res => res.json())
       .then(climb => {
-        console.log(climb)
         this.createCompletedUserClimb(climb)})
   }
 
@@ -352,7 +353,7 @@ class App extends Component {
   render() {
     return (
         <div className="App">
-          <NavBar user={this.state.user} handleLogOut={this.handleLogOut} fetchUserCrags={this.fetchUserCrags} fetchCompletedClimbs={this.fetchCompletedClimbs}/>
+          <NavBar user={this.state.user} handleLogOut={this.handleLogOut} fetchCompletedClimbs={this.fetchCompletedClimbs}/>
           <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user} searchTerm={this.state.searchTerm} props={this.props} climbs={this.state.climbs}/>
           {/* <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} /> */}
           <Switch>
@@ -364,7 +365,8 @@ class App extends Component {
           <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} user={this.state.user}/>} />
           <Route exact path='/climb/:name' render={() => <ClimbInfo climb={this.state.selectedClimb} />} />
           <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.userCrags} handleClick={this.handleCragClick} handleDeleteFavorite={this.handleDeleteFavorite} user={this.state.user}/>} />
-          <Route exact path={`/${this.state.user}/climbs-log`} render={() => <CompletedClimbsContainer climbs={this.state.userCompletedClimbs} handleClick={this.handleClimbClick} user={this.state.user}/>} />
+          <Route exact path={`/${this.state.user}/climbs-log`} render={() => <ClimbsContainer climbs={this.state.displayCompletedClimbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} user={this.state.user}/>} />
+          {/* <CompletedClimbsContainer climbs={this.state.userCompletedClimbs} handleClick={this.handleClimbClick} user={this.state.user}/>} /> */}
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
           </Switch>
         </div>
