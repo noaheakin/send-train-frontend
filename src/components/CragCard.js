@@ -3,9 +3,7 @@ import React from 'react';
 const CragCard = ({ handleClick, handleAddFavorite, handleDeleteFavorite, userCrags, crag, user }) => {
     if (user !== null) {
         if (userCrags) {
-            let filtCrags = userCrags.map(crag => `crag_id: ${crag.crag_id}`)
-            console.log(userCrags)
-            console.log(filtCrags)
+            let filtCrags = userCrags.map(crag => `crag_id: ${crag.id}`)
         return (
             <div onClick={() => handleClick(crag)} className="cragCard">
                 <h2>{crag.name}  </h2>

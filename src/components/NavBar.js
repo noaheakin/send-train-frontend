@@ -22,7 +22,7 @@ const NavBar = ({ user, handleLogOut, fetchUserCrags, fetchCompletedClimbs }) =>
       >
         Climbs Log
       </NavLink>,
-      <NavLink onClick={() => fetchUserCrags()}
+      <NavLink
         style={{ marginRight: '10px' }} 
         to={`/${user}/my-crags`}
       >
