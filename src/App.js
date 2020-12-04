@@ -30,128 +30,38 @@ class App extends Component {
     selectedClimb: ""
   }
 
-  handleSearchSubmit = e => {
-    e.preventDefault()
-    console.log(this.props)
-    fetch(API + `/get_areas`, {
-      method: "POST",
-      headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
+  componentDidMount = () => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      fetch(API + '/profile',{
+      method:'GET',
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({
-          name: e.target[0].value,
-      })
-      })
-      .then(res => res.json())
-      .then(crags => {
-        this.setState({crags: crags, searchTerm: e.target[0].value});
-        this.props.history.push(`/search?=${this.state.searchTerm}`)
-      })
-  }
-
-  fetchUserCrags = () => {
-    console.log("started")
-    this.setState({
-      displayUserCrags: []
     })
-    this.state.userCrags.map(crag => (
-      fetch(`http://localhost:3000/crags/${crag.crag_id}`, {
-        method: "GET",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        })
-        .then(res => res.json())
-        .then(crag => this.setState({
-          displayUserCrags: [...this.state.displayUserCrags, crag]
-        })
-    )))
-  }
-
-  fetchCompletedClimbs = () => {
-    console.log("started")
-    this.setState({
-      displayCompletedClimbs: []
+    .then(res => res.json())
+    .then(data => {
+      // localStorage.setItem("token", data.token)
+      this.setState({user: data.user.username, userID: data.user.id, token: data.token, userCrags: data.user.user_crags, completedClimbs: data.user.completed_climbs}, ()  =>{
+        this.props.history.push(`/user/${data.user.username}`)
+      })
     })
-    let climbIDs = this.state.completedClimbs.map(climb => (
-      fetch(`http://localhost:3000/climbs/${climb.climb_id}`, {
-        method: "GET",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-        },
-      })
-    ))
-    Promise.all(climbIDs)
-      .then(res => {
-        return Promise.all(res.map(data => data.json()))
-      })
-      .then(climbs => {this.setState({
-        displayCompletedClimbs: climbs
-        })
-        this.fetchCompletedClimbsByID()  
-      }
-    )
+    }
   }
 
-  fetchCompletedClimbsByID = () => {
-    debugger
-    let climb_ids = this.state.displayCompletedClimbs.map(climb => climb.mp_id).join(',')
-    console.log(climb_ids)
-    fetch(API + `/get_climbs_by_id`, {
-      method: "POST",
-      headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-          climb_ids: climb_ids
-      })
-      })
-      .then(res => res.json())
-      .then(console.log)
-      // fetch(`http://localhost:3000/climbs/${climb.climb_id}`, {
-      //   method: "GET",
-      //   headers: {
-      //       "Accept": "application/json",
-      //       "Content-Type": "application/json"
-      //   },
-      //   })
-      //   .then(res => res.json())
-      //   .then(
-  }
+  // handleLogIn = info => {
+  //   console.log('login')
+  //   this.logInAuthFetch(info)
+  // }
 
-  // fetch with climb ID's to MP - prob in backend during fetchCompletedClimbs GET
+  // handleSignUp = e => {
+  //   e.preventDefault()
+  //   this.signUpAuthFetch(e)
+  // }
 
-  handleLogIn = info => {
-    console.log('login')
-    this.logInAuthFetch(info)
-  }
-
-  handleSignUp = e => {
-    e.preventDefault()
-    this.signUpAuthFetch(e)
-  }
-
-  handleLogOut = () => {
-    this.setState({
-      user: null,
-      userID: null,
-      token: null,
-      crags: [],
-      userCrags: [],
-      completedClimbs: [],
-      displayCompletedClimbs: [],
-      displayUserCrags: [],
-      climbs: [],
-      searchTerm: "",
-      selectedClimb: ""
-    })
-  }
-
-  logInAuthFetch = (info) => {  
+  handleLogIn = (info) => {  
     console.log(info)
     fetch('http://localhost:3000/login',{
       method:'POST',
@@ -165,13 +75,15 @@ class App extends Component {
     })
     .then(res => res.json())
     .then(data => {
+      debugger
+      localStorage.setItem("token", data.token)
       this.setState({user: data.user.username, userID: data.user.id, token: data.token, userCrags: data.user.user_crags, completedClimbs: data.user.completed_climbs}, ()  =>{
         this.props.history.push(`/user/${data.user.username}`)
       })
     })
   }
 
-  signUpAuthFetch = e => {  
+  handleSignUp = e => {  
     console.log(e)
     debugger
     fetch('http://localhost:3000/register',{
@@ -199,6 +111,44 @@ class App extends Component {
     })
   }
 
+  handleLogOut = () => {
+    this.setState({
+      user: null,
+      userID: null,
+      token: null,
+      crags: [],
+      userCrags: [],
+      completedClimbs: [],
+      displayCompletedClimbs: [],
+      displayUserCrags: [],
+      climbs: [],
+      searchTerm: "",
+      selectedClimb: ""
+    })
+    localStorage.clear()
+  }
+
+  handleSearchSubmit = e => {
+    e.preventDefault()
+    console.log(this.props)
+    fetch(API + `/get_areas`, {
+      method: "POST",
+      headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          name: e.target[0].value,
+      })
+      })
+      .then(res => res.json())
+      .then(crags => {
+        debugger
+        this.setState({crags: crags, searchTerm: e.target[0].value});
+        this.props.history.push(`/search?=${this.state.searchTerm}`)
+      })
+  }
+
   handleCragClick = (crag) => {
     fetch(API + `/get_climbs`, {
       method: "POST",
@@ -223,6 +173,85 @@ class App extends Component {
     this.props.history.push(`/climb/${climb.name.split(' ').join('-')}`)
   }
 
+  fetchUserCrags = () => {
+    console.log("started")
+    const token = localStorage.getItem('token')
+    this.setState({
+      displayUserCrags: []
+    })
+    this.state.userCrags.map(crag => (
+      fetch(`http://localhost:3000/crags/${crag.crag_id}`, {
+        method: "GET",
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        })
+        .then(res => res.json())
+        .then(crag => this.setState({
+          displayUserCrags: [...this.state.displayUserCrags, crag]
+        })
+    )))
+  }
+
+  // fetchCompletedClimbs = () => {
+  //   console.log("started")
+  //   this.setState({
+  //     displayCompletedClimbs: []
+  //   })
+  //   const token = localStorage.getItem('token')
+  //   let climbIDs = this.state.completedClimbs.map(climb => (
+  //     fetch(`http://localhost:3000/climbs/${climb.climb_id}`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Accept": "application/json",
+  //         "Content-Type": "application/json",
+  //         'Authorization': `Bearer ${token}`
+  //       },
+  //     })
+  //   ))
+  //   Promise.all(climbIDs)
+  //     .then(res => {
+  //       return Promise.all(res.map(data => data.json()))
+  //     })
+  //     .then(climbs => {this.setState({
+  //       displayCompletedClimbs: climbs
+  //       })
+  //       this.fetchCompletedClimbsByID()  
+  //     }
+  //   )
+  // }
+
+  //+ByID 
+  
+  fetchCompletedClimbs = () => {
+    // let climb_ids = this.state.displayCompletedClimbs.map(climb => climb.mp_id).join(',')
+    // console.log(climb_ids)
+    const token = localStorage.getItem('token')
+    fetch(API + `/get_climbs_by_id`, {
+      method: "GET",
+      headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
+      },
+      })
+      .then(res => res.json())
+      .then(console.log)
+      // fetch(`http://localhost:3000/climbs/${climb.climb_id}`, {
+      //   method: "GET",
+      //   headers: {
+      //       "Accept": "application/json",
+      //       "Content-Type": "application/json"
+      //   },
+      //   })
+      //   .then(res => res.json())
+      //   .then(
+  }
+
+  // fetch with climb ID's to MP - prob in backend during fetchCompletedClimbs GET
+
+  
+
   // handleUserCragClick = (crag) => {
   //   console.log(`Clicked on ${crag}`)
   // }
@@ -230,11 +259,13 @@ class App extends Component {
   handleAddFavorite = (e, crag) => {
     e.stopPropagation()
     console.log(crag.id)
+    const token = localStorage.getItem('token')
     fetch(API + `/user_crags`, {
       method: "POST",
       headers: {
           "Accept": "application/json",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
           user_id: this.state.userID,
@@ -250,12 +281,12 @@ class App extends Component {
   handleDeleteFavorite = (e, crag) => {
     let targetCrag = this.state.userCrags.filter(c => c.crag_id === crag.id)
     console.log(targetCrag[0].id)
+    const token = localStorage.getItem('token')
     e.stopPropagation()
     fetch(API + `/user_crags/${targetCrag[0].id}`, {
       method: "DELETE",
       headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
+        'Authorization': `Bearer ${token}`
     }})
     this.setState({
       userCrags: this.state.userCrags.filter(c => c.crag_id !== crag.id),
