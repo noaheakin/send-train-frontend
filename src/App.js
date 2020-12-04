@@ -302,7 +302,6 @@ class App extends Component {
   // }
 
   addCompletedClimb = (e, climb) => {
-    debugger
     e.stopPropagation()
     const token = localStorage.getItem('token')
     console.log(`I climbed ${climb.name}`)
@@ -319,15 +318,19 @@ class App extends Component {
       })
       })
       .then(res => res.json())
-      .then(climb => this.createCompletedUserClimb(climb))
+      .then(climb => {
+        console.log(climb)
+        this.createCompletedUserClimb(climb)})
   }
 
   createCompletedUserClimb = (climb) => {
+    const token = localStorage.getItem('token')
     fetch('http://localhost:3000/completed_climbs', {
       method: "POST",
       headers: {
         "Accept": "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
         user_id: this.state.userID,
