@@ -259,7 +259,6 @@ class App extends Component {
     e.stopPropagation()
     const token = localStorage.getItem('token')
     console.log(`I climbed ${climb.name}`)
-    debugger
     fetch(API + `/climbs`, {
       method: "POST",
       headers: {
@@ -277,14 +276,13 @@ class App extends Component {
         this.createCompletedUserClimb(climb)})
   }
 
-  deleteCompletedClimb = (e, climb) => {
-    e.stopPropagation()
-    console.log(`I climbed ${climb.name}`)
-  }
+  // deleteCompletedClimb = (e, climb) => {
+  //   e.stopPropagation()
+  //   console.log(`I climbed ${climb.name}`)
+  // }
   
 
   createCompletedUserClimb = (climb) => {
-    debugger
     const token = localStorage.getItem('token')
     fetch('http://localhost:3000/completed_climbs', {
       method: "POST",
@@ -310,19 +308,24 @@ class App extends Component {
     }))
   }
 
-  // deleteCompletedUserClimb = (e, climb) => {
-  //   const token = localStorage.getItem('token')
-  //   e.stopPropagation()
-  //   fetch(API + `/completed_climbs/${targetCrag[0].id}`, {
-  //     method: "DELETE",
-  //     headers: {
-  //       'Authorization': `Bearer ${token}`
-  //   }})
-  //   this.setState({
-  //     userCrags: this.state.userCrags.filter(c => c.id !== crag.id)
-  //     // displayUserCrags: this.state.displayUserCrags.filter(c => c !== crag)
-  //   })
-  // }
+  deleteCompletedClimb = (e, climb) => {
+    const token = localStorage.getItem('token')
+    e.stopPropagation()
+    fetch(API + `/completed_climbs/${climb.id}`, {
+      method: "DELETE",
+      headers: {
+        'Authorization': `Bearer ${token}`
+    }})
+    this.setState({
+      completedClimbs: this.state.completedClimbs.filter(c => c.mp_id !== climb.id),
+      displayCompletedClimbs: this.state.displayCompletedClimbs.filter(c => c.id !== climb.id)
+
+    })
+    // this.setState({
+    //   userCrags: this.state.userCrags.filter(c => c.id !== crag.id)
+      // displayUserCrags: this.state.displayUserCrags.filter(c => c !== crag)
+    // })
+  }
 
   
 
