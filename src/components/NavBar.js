@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const NavBar = ({ user, handleLogOut, fetchCompletedClimbs }) => {
+const NavBar = ({ user, handleLogOut, fetchCompletedClimbs, fetchProfile }) => {
   return (
     <div style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
       <NavLink 
@@ -41,7 +41,7 @@ const NavBar = ({ user, handleLogOut, fetchCompletedClimbs }) => {
       >
         Sign Up
       </NavLink>] :
-      [<NavLink 
+      [<NavLink
         style={{ marginRight: '10px' }} 
         key={user}
         to={`/${user}/profile`}

@@ -11,6 +11,7 @@ import ClimbInfo from './components/ClimbInfo';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 import Home from './components/Home';
+import Profile from './components/Profile';
 
 const API = 'http://localhost:3000';
 
@@ -25,7 +26,8 @@ class App extends Component {
     displayCompletedClimbs: [],
     climbs: [],
     searchTerm: "",
-    selectedClimb: ""
+    selectedClimb: "",
+    displayUser: null
   }
 
   componentDidMount = () => {
@@ -40,12 +42,12 @@ class App extends Component {
       },
     })
     .then(res => res.json())
-    .then(({user}) => {
+    .then(({user, displayUser}) => {
       // localStorage.setItem("token", token)
       if (!user) {
         localStorage.removeItem('token')
       }
-      this.setState({user: user.username, userID: user.id, userCrags: user.crags, completedClimbs: user.climbs_done}, ()  =>{
+      this.setState({user: user.username, userID: user.id, userCrags: user.crags, completedClimbs: user.climbs_done, displayUser: displayUser}, ()  =>{
         this.props.history.push(`/user/${user.username}`)
       })
     })
@@ -65,9 +67,9 @@ class App extends Component {
       })
     })
     .then(res => res.json())
-    .then(({user, token}) => {
+    .then(({user, token, displayUser}) => {
       localStorage.setItem("token", token)
-      this.setState({user: user.username, userID: user.id, userCrags: user.crags, completedClimbs: user.climbs_done}, ()  =>{
+      this.setState({user: user.username, userID: user.id, userCrags: user.crags, completedClimbs: user.climbs_done, displayUser: displayUser}, ()  =>{
         this.props.history.push(`/user/${user.username}`)
       })
     })
@@ -327,14 +329,11 @@ class App extends Component {
     // })
   }
 
-  
-
-
   render() {
     return (
         <div className="App">
           <NavBar user={this.state.user} handleLogOut={this.handleLogOut} fetchCompletedClimbs={this.fetchCompletedClimbs}/>
-          <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user} searchTerm={this.state.searchTerm} props={this.props} climbs={this.state.climbs}/>
+          <SearchBar handleSearchSubmit={this.handleSearchSubmit} fetchProfile={this.fetchProfile} user={this.state.user} searchTerm={this.state.searchTerm} props={this.props} climbs={this.state.climbs}/>
           {/* <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} /> */}
           <Switch>
           {/* <Route path='/' render={() => <SearchBar handleSearchSubmit={this.handleSearchSubmit} user={this.state.user} searchTerm={this.state.searchTerm} />} /> */}
@@ -346,6 +345,7 @@ class App extends Component {
           <Route exact path='/climb/:name' render={() => <ClimbInfo climb={this.state.selectedClimb} />} />
           <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.userCrags} handleClick={this.handleCragClick} handleDeleteFavorite={this.handleDeleteFavorite} user={this.state.user}/>} />
           <Route exact path={`/${this.state.user}/climbs-log`} render={() => <ClimbsContainer climbs={this.state.displayCompletedClimbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} deleteCompletedClimb={this.deleteCompletedClimb} completedClimbs={this.state.completedClimbs} user={this.state.user}/>} />
+          <Route exact path={`/${this.state.user}/profile`} render={() => <Profile user={this.state.displayUser} />} />
           {/* <CompletedClimbsContainer climbs={this.state.userCompletedClimbs} handleClick={this.handleClimbClick} user={this.state.user}/>} /> */}
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
           </Switch>
