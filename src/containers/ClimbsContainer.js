@@ -5,7 +5,7 @@ import DisciplineSelect from '../components/filters/DisciplineSelect';
 import SortSelect from '../components/filters/SortSelect';
 import TestSlider from '../components/filters/TestSlider';
 
-const ClimbsContainer = ({ climbs, handleClick, addWishClimb, addCompletedClimb, user }) => {
+const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteCompletedClimb, addCompletedClimb, completedClimbs, user }) => {
     return (
         <div>
             {(climbs.length > 0) ? [
@@ -26,7 +26,7 @@ const ClimbsContainer = ({ climbs, handleClick, addWishClimb, addCompletedClimb,
                 </div>
             ] : null}
             <div className="climbContainer">
-                {climbs.map(climb => <ClimbCard key={climb.id} climb={climb} handleClick={handleClick} addWishClimb={addWishClimb} addCompletedClimb={addCompletedClimb} user={user}/>)}
+                {climbs.map(climb => <ClimbCard key={climb.id} climb={climb} handleClick={handleClick} addWishClimb={addWishClimb} addCompletedClimb={addCompletedClimb} deleteCompletedClimb={deleteCompletedClimb} completedClimbs={completedClimbs} user={user}/>)}
             </div>
         </div>
     )

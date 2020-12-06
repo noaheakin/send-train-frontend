@@ -5,7 +5,7 @@ import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
 import CragsContainer from './containers/CragsContainer';
 import UserCragsContainer from './containers/UserCragsContainer';
-import CompletedClimbsContainer from './containers/CompletedClimbsContainer';
+// import CompletedClimbsContainer from './containers/CompletedClimbsContainer';
 import ClimbsContainer from './containers/ClimbsContainer';
 import ClimbInfo from './components/ClimbInfo';
 import LogIn from './components/LogIn';
@@ -45,7 +45,7 @@ class App extends Component {
       if (!user) {
         localStorage.removeItem('token')
       }
-      this.setState({user: user.username, userID: user.id, userCrags: user.crags, completedClimbs: user.done_climbs}, ()  =>{
+      this.setState({user: user.username, userID: user.id, userCrags: user.crags, completedClimbs: user.climbs_done}, ()  =>{
         this.props.history.push(`/user/${user.username}`)
       })
     })
@@ -158,40 +158,8 @@ class App extends Component {
     this.setState({selectedClimb: climb})
     this.props.history.push(`/climb/${climb.name.split(' ').join('-')}`)
   }
-
-  // fetchCompletedClimbs = () => {
-  //   console.log("started")
-  //   this.setState({
-  //     displayCompletedClimbs: []
-  //   })
-  //   const token = localStorage.getItem('token')
-  //   let climbIDs = this.state.completedClimbs.map(climb => (
-  //     fetch(`http://localhost:3000/climbs/${climb.climb_id}`, {
-  //       method: "GET",
-  //       headers: {
-  //         "Accept": "application/json",
-  //         "Content-Type": "application/json",
-  //         'Authorization': `Bearer ${token}`
-  //       },
-  //     })
-  //   ))
-  //   Promise.all(climbIDs)
-  //     .then(res => {
-  //       return Promise.all(res.map(data => data.json()))
-  //     })
-  //     .then(climbs => {this.setState({
-  //       displayCompletedClimbs: climbs
-  //       })
-  //       this.fetchCompletedClimbsByID()  
-  //     }
-  //   )
-  // }
-
-  //+ByID 
   
   fetchCompletedClimbs = () => {
-    // let climb_ids = this.state.displayCompletedClimbs.map(climb => climb.mp_id).join(',')
-    // console.log(climb_ids)
     const token = localStorage.getItem('token')
     fetch(API + `/get_climbs_by_id`, {
       method: "GET",
@@ -205,24 +173,7 @@ class App extends Component {
       .then(climbs => this.setState({
         displayCompletedClimbs: climbs
       }))
-      // fetch(`http://localhost:3000/climbs/${climb.climb_id}`, {
-      //   method: "GET",
-      //   headers: {
-      //       "Accept": "application/json",
-      //       "Content-Type": "application/json"
-      //   },
-      //   })
-      //   .then(res => res.json())
-      //   .then(
   }
-
-  // fetch with climb ID's to MP - prob in backend during fetchCompletedClimbs GET
-
-  
-
-  // handleUserCragClick = (crag) => {
-  //   console.log(`Clicked on ${crag}`)
-  // }
 
   handleAddFavorite = (e, crag) => {
     e.stopPropagation()
@@ -247,11 +198,12 @@ class App extends Component {
   }
 
   handleDeleteFavorite = (e, crag) => {
-    let targetCrag = this.state.userCrags.filter(c => c.id === crag.id)
-    console.log(targetCrag[0].id)
+    // let targetCrag = this.state.userCrags.filter(c => c.id === crag.id)
+    // console.log(targetCrag[0].id)
+    // targetCrag[0].id
     const token = localStorage.getItem('token')
     e.stopPropagation()
-    fetch(API + `/user_crags/${targetCrag[0].id}`, {
+    fetch(API + `/user_crags/${crag.id}`, {
       method: "DELETE",
       headers: {
         'Authorization': `Bearer ${token}`
@@ -307,6 +259,7 @@ class App extends Component {
     e.stopPropagation()
     const token = localStorage.getItem('token')
     console.log(`I climbed ${climb.name}`)
+    debugger
     fetch(API + `/climbs`, {
       method: "POST",
       headers: {
@@ -324,7 +277,14 @@ class App extends Component {
         this.createCompletedUserClimb(climb)})
   }
 
+  deleteCompletedClimb = (e, climb) => {
+    e.stopPropagation()
+    console.log(`I climbed ${climb.name}`)
+  }
+  
+
   createCompletedUserClimb = (climb) => {
+    debugger
     const token = localStorage.getItem('token')
     fetch('http://localhost:3000/completed_climbs', {
       method: "POST",
@@ -334,7 +294,6 @@ class App extends Component {
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        user_id: this.state.userID,
         climb_id: climb.id
       })
     })
@@ -346,8 +305,26 @@ class App extends Component {
     // })} 
     // }
     // )
-    .then(console.log)
+    .then(c => this.setState({
+      completedClimbs: [...this.state.completedClimbs, c]
+    }))
   }
+
+  // deleteCompletedUserClimb = (e, climb) => {
+  //   const token = localStorage.getItem('token')
+  //   e.stopPropagation()
+  //   fetch(API + `/completed_climbs/${targetCrag[0].id}`, {
+  //     method: "DELETE",
+  //     headers: {
+  //       'Authorization': `Bearer ${token}`
+  //   }})
+  //   this.setState({
+  //     userCrags: this.state.userCrags.filter(c => c.id !== crag.id)
+  //     // displayUserCrags: this.state.displayUserCrags.filter(c => c !== crag)
+  //   })
+  // }
+
+  
 
 
   render() {
@@ -362,10 +339,10 @@ class App extends Component {
           <Route exact path='/log-in' render={() => <LogIn handleLogIn={this.handleLogIn} />} />
           <Route exact path='/sign-up' render={() => <SignUp handleSignUp={this.handleSignUp} />} />
           <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} handleAddFavorite={this.handleAddFavorite} handleDeleteFavorite={this.handleDeleteFavorite} userCrags={this.state.userCrags} user={this.state.user}/>} />
-          <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} user={this.state.user}/>} />
+          <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} deleteCompletedClimb={this.deleteCompletedClimb} completedClimbs={this.state.completedClimbs} user={this.state.user}/>} />
           <Route exact path='/climb/:name' render={() => <ClimbInfo climb={this.state.selectedClimb} />} />
           <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.userCrags} handleClick={this.handleCragClick} handleDeleteFavorite={this.handleDeleteFavorite} user={this.state.user}/>} />
-          <Route exact path={`/${this.state.user}/climbs-log`} render={() => <ClimbsContainer climbs={this.state.displayCompletedClimbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} user={this.state.user}/>} />
+          <Route exact path={`/${this.state.user}/climbs-log`} render={() => <ClimbsContainer climbs={this.state.displayCompletedClimbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} deleteCompletedClimb={this.deleteCompletedClimb} completedClimbs={this.state.completedClimbs} user={this.state.user}/>} />
           {/* <CompletedClimbsContainer climbs={this.state.userCompletedClimbs} handleClick={this.handleClimbClick} user={this.state.user}/>} /> */}
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
           </Switch>
