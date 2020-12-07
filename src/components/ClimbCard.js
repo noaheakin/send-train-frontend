@@ -2,7 +2,7 @@ import React from 'react';
 
 const ClimbCard = ({ handleClick, addWishClimb, addCompletedClimb, deleteCompletedClimb, completedClimbs, climb, user }) => {
     if (user !== null) {
-        if (completedClimbs !== []) {
+        if (completedClimbs.length !== 0) {
             let filtClimbs = completedClimbs.map(c => c.mp_id)
             console.log(filtClimbs)
             return (
