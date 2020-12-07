@@ -6,16 +6,20 @@ import SortSelect from '../components/filters/SortSelect';
 import TestSlider from '../components/filters/TestSlider';
 import MoreTesting from '../components/filters/MoreTesting';
 
-const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteCompletedClimb, addCompletedClimb, completedClimbs, filterClimbsSubmit, handleSelectChange, user }) => {
+const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteCompletedClimb, addCompletedClimb, completedClimbs, filterClimbsSubmit, handleSelectChange, handleDisciplineChange, user }) => {
     return (
         <div>
             {(climbs.length > 0) ? [
+                <form onSubmit={filterClimbsSubmit}>
+                    <input type="text" id="crag-search" name="crag" placeholder="Search for a climb" required />
+                    <input type="submit" id="crag-search-submit" name="crag-search-submit"></input>
+                </form>,
                 <div className='select-discipline'>
-                    <DisciplineSelect />
+                    <DisciplineSelect handleDisciplineChange={handleDisciplineChange} />
                 </div>,
-                <div>
-                    <SortSelect />
-                </div>,
+                // <div>
+                //     <SortSelect />
+                // </div>,
                 <div>
                     {/* <Typography id="range-slider" gutterBottom>
                         Temperature range
@@ -25,13 +29,9 @@ const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteCompletedCli
                 <div>
                     <MoreTesting climbs={climbs} handleSelectChange={handleSelectChange}/>
                 </div>,
-                <div>
-                    <TestSlider />
-                </div>,
-                <form onSubmit={filterClimbsSubmit}>
-                    <input type="text" id="crag-search" name="crag" placeholder="Search for a crag" required />
-                    <input type="submit" id="crag-search-submit" name="crag-search-submit"></input>
-                </form>
+                // <div>
+                //     <TestSlider />
+                // </div>,
             ] : null}
             <div className="climbContainer">
                 {climbs.map(climb => <ClimbCard key={climb.id} climb={climb} handleClick={handleClick} addWishClimb={addWishClimb} addCompletedClimb={addCompletedClimb} deleteCompletedClimb={deleteCompletedClimb} completedClimbs={completedClimbs} user={user}/>)}
