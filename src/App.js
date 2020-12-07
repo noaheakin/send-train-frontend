@@ -12,6 +12,7 @@ import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 import Home from './components/Home';
 import Profile from './components/Profile';
+import EditProfile from './components/EditProfile';
 
 const API = 'http://localhost:3000';
 
@@ -329,6 +330,40 @@ class App extends Component {
     // })
   }
 
+  displayEditPage = () => {
+    this.props.history.push(`/${this.state.user}/edit-profile`)
+  }
+
+  editProfile = (e) => {
+    e.preventDefault()
+    const token = localStorage.getItem('token')
+    fetch(`http://localhost:3000/users/${this.state.userID}`, {
+      method: "PATCH",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        profile_pic: e.target.profile_pic.value,
+        bio: e.target.bio.value,  
+        location: e.target.location.value,
+        username: e.target.username.value,
+        name: e.target.name.value
+      })
+    })
+    .then(res => res.json())
+    .then(user => {
+      this.setState({
+      user: user.username,
+      userID: user.id,
+      displayUser: user
+    })
+    this.props.history.push(`/${this.state.user}/profile`)
+  })
+
+  }
+
   render() {
     return (
         <div className="App">
@@ -345,7 +380,8 @@ class App extends Component {
           <Route exact path='/climb/:name' render={() => <ClimbInfo climb={this.state.selectedClimb} />} />
           <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.userCrags} handleClick={this.handleCragClick} handleDeleteFavorite={this.handleDeleteFavorite} user={this.state.user}/>} />
           <Route exact path={`/${this.state.user}/climbs-log`} render={() => <ClimbsContainer climbs={this.state.displayCompletedClimbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} deleteCompletedClimb={this.deleteCompletedClimb} completedClimbs={this.state.completedClimbs} user={this.state.user}/>} />
-          <Route exact path={`/${this.state.user}/profile`} render={() => <Profile user={this.state.displayUser} />} />
+          <Route exact path={`/${this.state.user}/profile`} render={() => <Profile user={this.state.displayUser} displayEditPage={this.displayEditPage} />} />
+          <Route exact path={`/${this.state.user}/edit-profile`} render={() => <EditProfile user={this.state.displayUser} editProfile={this.editProfile}/>} />
           {/* <CompletedClimbsContainer climbs={this.state.userCompletedClimbs} handleClick={this.handleClimbClick} user={this.state.user}/>} /> */}
           {/* {(this.state.searchTerm !== "") ? <Route path={`/search?${this.state.searchTerm}`} render={() => <CragsContainer crags={this.state.crags} />} /> : <p>No Crags</p>} */}
           </Switch>

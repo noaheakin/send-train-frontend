@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Profile = ({user}) => {
-    console.log(user)
+const Profile = ({user, displayEditPage}) => {
+
     return (
         <div>
             {user.profile_pic == "" ? <img height="300" width="300" src={process.env.PUBLIC_URL + '/images/default_profile.jpg'}/> : <img height="300" width="300" src={user.profile_pic}></img>}
@@ -9,6 +9,7 @@ const Profile = ({user}) => {
             <h3><em>{user.name}</em></h3>
             <h4>{user.bio}</h4>
             <h3>{user.location}</h3>
+            <button onClick={() => displayEditPage()}>Edit Profile</button>
         </div>
     )
 }
