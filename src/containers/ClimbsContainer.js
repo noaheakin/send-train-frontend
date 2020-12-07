@@ -6,7 +6,7 @@ import SortSelect from '../components/filters/SortSelect';
 import TestSlider from '../components/filters/TestSlider';
 import MoreTesting from '../components/filters/MoreTesting';
 
-const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteCompletedClimb, addCompletedClimb, completedClimbs, filterClimbsSubmit, handleSelectChange, handleDisciplineChange, user }) => {
+const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteWishClimb, wishClimbs, deleteCompletedClimb, addCompletedClimb, completedClimbs, filterClimbsSubmit, handleSelectChange, handleDisciplineChange, user }) => {
     return (
         <div>
             {(climbs.length > 0) ? [
@@ -32,9 +32,9 @@ const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteCompletedCli
                 // <div>
                 //     <TestSlider />
                 // </div>,
-            ] : null}
+            ] : null }
             <div className="climbContainer">
-                {climbs.map(climb => <ClimbCard key={climb.id} climb={climb} handleClick={handleClick} addWishClimb={addWishClimb} addCompletedClimb={addCompletedClimb} deleteCompletedClimb={deleteCompletedClimb} completedClimbs={completedClimbs} user={user}/>)}
+                {climbs.map(climb => <ClimbCard key={climb.id} climb={climb} handleClick={handleClick} addWishClimb={addWishClimb} deleteWishClimb={deleteWishClimb} wishClimbs={wishClimbs} addCompletedClimb={addCompletedClimb} deleteCompletedClimb={deleteCompletedClimb} completedClimbs={completedClimbs} user={user}/>)}
             </div>
         </div>
     )

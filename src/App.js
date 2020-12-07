@@ -24,7 +24,9 @@ class App extends Component {
     crags: [],
     userCrags: [],
     completedClimbs: [],
+    wishClimbs: [],
     displayCompletedClimbs: [],
+    displayWishClimbs: [],
     climbs: [],
     searchTerm: "",
     selectedClimb: "",
@@ -49,7 +51,7 @@ class App extends Component {
       if (!user) {
         localStorage.removeItem('token')
       }
-      this.setState({user: user.username, userID: user.id, userCrags: user.crags, completedClimbs: user.climbs_done, displayUser: displayUser}, ()  =>{
+      this.setState({user: user.username, userID: user.id, userCrags: user.crags, completedClimbs: user.climbs_done, wishClimbs: user.climbs_want, displayUser: displayUser}, ()  =>{
         this.props.history.push(`/user/${user.username}`)
       })
     })
@@ -114,7 +116,9 @@ class App extends Component {
       displayCompletedClimbs: [],
       climbs: [],
       searchTerm: "",
-      selectedClimb: ""
+      selectedClimb: "",
+      displayUser: null,
+      currentCrag: null
     })
     localStorage.clear()
   }
@@ -179,6 +183,22 @@ class App extends Component {
       }))
   }
 
+  fetchTargetClimbs = () => {
+    const token = localStorage.getItem('token')
+    fetch(API + `/get_target_climbs_by_id`, {
+      method: "GET",
+      headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
+      },
+      })
+      .then(res => res.json())
+      .then(climbs => this.setState({
+        displayWishClimbs: climbs
+      }))
+  }
+
   handleAddFavorite = (e, crag) => {
     e.stopPropagation()
     console.log(crag.id)
@@ -220,12 +240,14 @@ class App extends Component {
 
   addWishClimb = (e, climb) => {
     e.stopPropagation()
+    const token = localStorage.getItem('token')
     console.log(climb)
     fetch(API + `/climbs`, {
       method: "POST",
       headers: {
           "Accept": "application/json",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
           mp_id: climb.id,
@@ -233,31 +255,42 @@ class App extends Component {
       })
       })
       .then(res => res.json())
-      .then(console.log)
+      .then(climb => this.createTargetUserClimb(climb))
       // .then(climb => this.createWishListClimb(climb))
   }
 
-  // createWishListClimb = (climb) => {
-  //   fetch('http://localhost:3000/target_climbs', {
-  //     method: "POST",
-  //     headers: {
-  //       "Accept": "application/json",
-  //       "Content-Type": "application/json"
-  //     },
-  //     body: JSON.stringify({
-  //       user_id: this.state.userID,
-  //       climb_id: climb.id
-  //     })
-  //   })
-  //   .then(res => res.json())
-  //   .then(favorite => {if(!this.state.currentUserFavorites.find(favorite => favorite.organism_id === organism.id)) {
-  //     alert("Successfully added to favorites!")
-  //     this.setState({
-  //     currentUserFavorites: [...this.state.currentUserFavorites, favorite]
-  //   })} 
-  //   }
-  //   )
-  // }
+  createTargetUserClimb = (climb) => {
+    const token = localStorage.getItem('token')
+    fetch('http://localhost:3000/target_climbs', {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        climb_id: climb.id
+      })
+    })
+    .then(res => res.json())
+    .then(c => this.setState({
+      wishClimbs: [...this.state.wishClimbs, c]
+    }))
+  }
+
+  deleteWishClimb = (e, climb) => {
+    const token = localStorage.getItem('token')
+    e.stopPropagation()
+    fetch(API + `/target_climbs/${climb.id}`, {
+      method: "DELETE",
+      headers: {
+        'Authorization': `Bearer ${token}`
+    }})
+    this.setState({
+      wishClimbs: this.state.wishClimbs.filter(c => c.mp_id !== climb.id),
+      displayCompletedClimbs: this.state.displayCompletedClimbs.filter(c => c.id !== climb.id)
+    })
+  }
 
   addCompletedClimb = (e, climb) => {
     e.stopPropagation()
@@ -368,7 +401,7 @@ class App extends Component {
     console.log(e)
     console.log(this.props.history.location.pathname)
     if (e.target.value === 1) {
-      if (this.props.history.location.pathname == `/${this.state.user}/climbs-log`) {
+      if (this.props.history.location.pathname === `/${this.state.user}/climbs-log`) {
         this.setState({
           displayCompletedClimbs: this.state.displayCompletedClimbs.sort((a, b) => (a.stars < b.stars) ? 1 : -1)
         })
@@ -378,7 +411,7 @@ class App extends Component {
         })
       }
     } else if (e.target.value === 2) {
-      if (this.props.history.location.pathname == `/${this.state.user}/climbs-log`) {
+      if (this.props.history.location.pathname === `/${this.state.user}/climbs-log`) {
         this.setState({
           displayCompletedClimbs: this.state.displayCompletedClimbs.sort((a, b) => (a.stars > b.stars) ? 1 : -1)
         })
@@ -388,7 +421,7 @@ class App extends Component {
         })
       }
     } else if (e.target.value === 3) {
-      if (this.props.history.location.pathname == `/${this.state.user}/climbs-log`) {
+      if (this.props.history.location.pathname === `/${this.state.user}/climbs-log`) {
         this.setState({
           displayCompletedClimbs: this.state.displayCompletedClimbs.sort((a, b) => (a.starVotes < b.starVotes) ? 1 : -1)
         })
@@ -398,7 +431,7 @@ class App extends Component {
         })
       }
     } else if (e.target.value === 4) {
-      if (this.props.history.location.pathname == `/${this.state.user}/climbs-log`) {
+      if (this.props.history.location.pathname === `/${this.state.user}/climbs-log`) {
         this.setState({
           displayCompletedClimbs: this.state.displayCompletedClimbs.sort((a, b) => (a.starVotes > b.starVotes) ? 1 : -1)
         })
@@ -408,7 +441,7 @@ class App extends Component {
         })
       }
     } else if (e.target.value === 5) {
-      if (this.props.history.location.pathname == `/${this.state.user}/climbs-log`) {
+      if (this.props.history.location.pathname === `/${this.state.user}/climbs-log`) {
         this.setState({
           displayCompletedClimbs: this.state.displayCompletedClimbs.sort((a, b) => (a.name > b.name) ? 1 : -1)
         })
@@ -418,7 +451,7 @@ class App extends Component {
         })
       }
     } else if (e.target.value === 6) {
-      if (this.props.history.location.pathname == `/${this.state.user}/climbs-log`) {
+      if (this.props.history.location.pathname === `/${this.state.user}/climbs-log`) {
         this.setState({
           displayCompletedClimbs: this.state.displayCompletedClimbs.sort((a, b) => (a.name < b.name) ? 1 : -1)
         })
@@ -454,7 +487,7 @@ class App extends Component {
   handleDisciplineChange = (e) => {
     // this.handleRefreshClimbs()
     if (e.target.value === 1) {
-      if (this.props.history.location.pathname == `/${this.state.user}/climbs-log`) {
+      if (this.props.history.location.pathname === `/${this.state.user}/climbs-log`) {
         this.setState({
           displayCompletedClimbs: this.state.displayCompletedClimbs.filter(c => c.type === "Boulder")
         })
@@ -464,7 +497,7 @@ class App extends Component {
         })
       }
     } else if (e.target.value === 2) {
-      if (this.props.history.location.pathname == `/${this.state.user}/climbs-log`) {
+      if (this.props.history.location.pathname === `/${this.state.user}/climbs-log`) {
         this.setState({
           displayCompletedClimbs: this.state.displayCompletedClimbs.filter(c => c.type === "Sport")
         })
@@ -474,7 +507,7 @@ class App extends Component {
         })
       }
     } else if (e.target.value === 3) {
-      if (this.props.history.location.pathname == `/${this.state.user}/climbs-log`) {
+      if (this.props.history.location.pathname === `/${this.state.user}/climbs-log`) {
         this.setState({
           displayCompletedClimbs: this.state.displayCompletedClimbs.filter(c => c.type === "Trad")
         })
@@ -489,7 +522,7 @@ class App extends Component {
   render() {
     return (
         <div className="App">
-          <NavBar user={this.state.user} handleLogOut={this.handleLogOut} fetchCompletedClimbs={this.fetchCompletedClimbs}/>
+          <NavBar user={this.state.user} handleLogOut={this.handleLogOut} fetchCompletedClimbs={this.fetchCompletedClimbs} fetchTargetClimbs={this.fetchTargetClimbs}/>
           <SearchBar handleSearchSubmit={this.handleSearchSubmit} fetchProfile={this.fetchProfile} user={this.state.user} searchTerm={this.state.searchTerm} props={this.props} climbs={this.state.climbs}/>
           {/* <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} /> */}
           <Switch>
@@ -498,10 +531,11 @@ class App extends Component {
           <Route exact path='/log-in' render={() => <LogIn handleLogIn={this.handleLogIn} />} />
           <Route exact path='/sign-up' render={() => <SignUp handleSignUp={this.handleSignUp} />} />
           <Route exact path='/:search' render={() => <CragsContainer crags={this.state.crags} handleClick={this.handleCragClick} handleAddFavorite={this.handleAddFavorite} handleDeleteFavorite={this.handleDeleteFavorite} userCrags={this.state.userCrags} user={this.state.user}/>} />
-          <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} deleteCompletedClimb={this.deleteCompletedClimb} completedClimbs={this.state.completedClimbs} handleSelectChange={this.handleSelectChange} handleDisciplineChange={this.handleDisciplineChange} user={this.state.user}/>} />
+          <Route exact path='/crag/:name' render={() => <ClimbsContainer climbs={this.state.climbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} deleteWishClimb={this.deleteWishClimb} wishClimbs={this.state.wishClimbs} addCompletedClimb={this.addCompletedClimb} deleteCompletedClimb={this.deleteCompletedClimb} completedClimbs={this.state.completedClimbs} handleSelectChange={this.handleSelectChange} handleDisciplineChange={this.handleDisciplineChange} user={this.state.user}/>} />
           <Route exact path='/climb/:name' render={() => <ClimbInfo climb={this.state.selectedClimb} />} />
           <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.userCrags} handleClick={this.handleCragClick} handleDeleteFavorite={this.handleDeleteFavorite} user={this.state.user}/>} />
-          <Route exact path={`/${this.state.user}/climbs-log`} render={() => <ClimbsContainer climbs={this.state.displayCompletedClimbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} addCompletedClimb={this.addCompletedClimb} deleteCompletedClimb={this.deleteCompletedClimb} completedClimbs={this.state.completedClimbs} handleSelectChange={this.handleSelectChange} handleDisciplineChange={this.handleDisciplineChange} user={this.state.user}/>} />
+          <Route exact path={`/${this.state.user}/climbs-log`} render={() => <ClimbsContainer climbs={this.state.displayCompletedClimbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} deleteWishClimb={this.deleteWishClimb} wishClimbs={this.state.wishClimbs} addCompletedClimb={this.addCompletedClimb} deleteCompletedClimb={this.deleteCompletedClimb} completedClimbs={this.state.completedClimbs} handleSelectChange={this.handleSelectChange} handleDisciplineChange={this.handleDisciplineChange} user={this.state.user}/>} />
+          <Route exact path={`/${this.state.user}/wish-list`} render={() => <ClimbsContainer climbs={this.state.displayWishClimbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} deleteWishClimb={this.deleteWishClimb} wishClimbs={this.state.wishClimbs} addCompletedClimb={this.addCompletedClimb} deleteCompletedClimb={this.deleteCompletedClimb} completedClimbs={this.state.completedClimbs} handleSelectChange={this.handleSelectChange} handleDisciplineChange={this.handleDisciplineChange} user={this.state.user}/>} />
           <Route exact path={`/${this.state.user}/profile`} render={() => <Profile user={this.state.displayUser} displayEditPage={this.displayEditPage} />} />
           <Route exact path={`/${this.state.user}/edit-profile`} render={() => <EditProfile user={this.state.displayUser} editProfile={this.editProfile}/>} />
           {/* <CompletedClimbsContainer climbs={this.state.userCompletedClimbs} handleClick={this.handleClimbClick} user={this.state.user}/>} /> */}

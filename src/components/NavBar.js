@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const NavBar = ({ user, handleLogOut, fetchCompletedClimbs, fetchProfile }) => {
+const NavBar = ({ user, handleLogOut, fetchCompletedClimbs, fetchTargetClimbs }) => {
   return (
     <div style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
       <NavLink 
@@ -10,11 +10,11 @@ const NavBar = ({ user, handleLogOut, fetchCompletedClimbs, fetchProfile }) => {
       >
         Home
       </NavLink>
-      {(user) ? [<NavLink 
+      {(user) ? [<NavLink onClick={() => fetchTargetClimbs()}
         style={{ marginRight: '10px' }} 
-        to={`/${user}/tick-lists`}
+        to={`/${user}/wish-list`}
       >
-        Tick List
+        Wish List
       </NavLink>,
       <NavLink onClick={() => fetchCompletedClimbs()}
         style={{ marginRight: '10px' }} 
