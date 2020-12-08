@@ -106,7 +106,11 @@ body {
 } */
 
 .climbSorter {
-  width: 200px;
+  width: 150px;
+}
+
+.disciplineSelector {
+  width: 150px;
 }
 
 .ui.cards {
