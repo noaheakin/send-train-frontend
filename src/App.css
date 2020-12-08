@@ -156,3 +156,7 @@ body {
   width: 400px;
   z-index: 20;
 }
+
+.navProfilePic {
+  border-radius: 20px;
+}

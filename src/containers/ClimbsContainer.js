@@ -10,11 +10,11 @@ const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteWishClimb, w
     return (
         <div>
             {(climbs.length > 0) ? [
-                <div class="ui visible sidebar">
-                <form onSubmit={filterClimbsSubmit}>
+                <div className="sortMenu">
+                {/* <form onSubmit={filterClimbsSubmit}>
                     <input type="text" id="crag-search" name="crag" placeholder="Search for a climb" required />
                     <input type="submit" id="crag-search-submit" name="crag-search-submit"></input>
-                </form>,
+                </form>, */}
                 <div className='select-discipline'>
                     <DisciplineSelect handleDisciplineChange={handleDisciplineChange} />
                 </div>,

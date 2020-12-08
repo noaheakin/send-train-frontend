@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const NavBar = ({ user, handleLogOut, fetchCompletedClimbs, fetchTargetClimbs }) => {
+const NavBar = ({ user, userInfo, handleLogOut, fetchCompletedClimbs, fetchTargetClimbs }) => {
   return (
     <div style={{ backgroundColor: '#0E6EB8', paddingTop: '10px', paddingBottom: '10px', marginBottom: '12px', height: '56px' }}>
       <Link class="ui blue button"
@@ -54,12 +54,13 @@ const NavBar = ({ user, handleLogOut, fetchCompletedClimbs, fetchTargetClimbs })
     >
       Log Out
     </Link>,
-    <Link class="ui blue button"
+    <Link
+        
         style={{ marginRight: '10px', float: 'right' }} 
         key={user}
         to={`/${user}/profile`}
       >
-        View Profile
+        {(userInfo.profile_pic === "") ? <img className="navProfilePic" height="37" width="37" src={process.env.PUBLIC_URL + '/images/default_profile.jpg'}/> : <img className="navProfilePic" height="37" width="37" src={userInfo.profile_pic} />}
       </Link> 
       ]
     }

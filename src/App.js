@@ -533,7 +533,7 @@ class App extends Component {
   render() {
     return (
         <div className="App">
-          <NavBar user={this.state.user} handleLogOut={this.handleLogOut} fetchCompletedClimbs={this.fetchCompletedClimbs} fetchTargetClimbs={this.fetchTargetClimbs}/>
+          <NavBar user={this.state.user} userInfo={this.state.displayUser} handleLogOut={this.handleLogOut} fetchCompletedClimbs={this.fetchCompletedClimbs} fetchTargetClimbs={this.fetchTargetClimbs}/>
           <SearchBar handleSearchSubmit={this.handleSearchSubmit} fetchProfile={this.fetchProfile} user={this.state.user} searchTerm={this.state.searchTerm} props={this.props} climbs={this.state.climbs}/>
           
           <Switch>
