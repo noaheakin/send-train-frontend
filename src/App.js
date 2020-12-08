@@ -113,7 +113,9 @@ class App extends Component {
       crags: [],
       userCrags: [],
       completedClimbs: [],
+      wishClimbs: [],
       displayCompletedClimbs: [],
+      displayWishClimbs: [],
       climbs: [],
       searchTerm: "",
       selectedClimb: "",
@@ -547,7 +549,7 @@ class App extends Component {
             <Route exact path={`/${this.state.user}/wish-list`} render={() => <ClimbsContainer climbs={this.state.displayWishClimbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} deleteWishClimb={this.deleteWishClimb} wishClimbs={this.state.wishClimbs} addCompletedClimb={this.addCompletedClimb} deleteCompletedClimb={this.deleteCompletedClimb} completedClimbs={this.state.completedClimbs} handleSelectChange={this.handleSelectChange} handleDisciplineChange={this.handleDisciplineChange} user={this.state.user}/>} />
             <Route exact path={`/${this.state.user}/profile`} render={() => <Profile user={this.state.displayUser} displayEditPage={this.displayEditPage} />} />
             <Route exact path={`/${this.state.user}/edit-profile`} render={() => <EditProfile user={this.state.displayUser} editProfile={this.editProfile}/>} />
-            <Route component={NotFound} />
+            <Route render={() => <NotFound />} />
           </Switch>
         </div>
     );

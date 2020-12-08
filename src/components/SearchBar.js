@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const SearchBar = ( { handleSearchSubmit, user, climbs } ) => {
     return (
-        <div style={{marginTop: '60px'}}>
+        <div style={{marginTop: '60px', marginBottom: '30px'}}>
             {/* <div>{(!user) ? null : <h2>Welcome, {user}!</h2>}
             </div> */}
             <span className="mainSearch">

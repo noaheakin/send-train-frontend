@@ -20,17 +20,25 @@ const CragCard = ({ handleClick, handleAddFavorite, handleDeleteFavorite, userCr
         } else {
             return (
                 <div onClick={() => handleClick(crag)} class="card">
-                    <h2> {crag.name}  </h2>
-                    <h3><em>{crag.location}</em></h3>
-                    <i onClick={(e) => handleDeleteFavorite(e, crag)} className="favorite" class="red large heart icon"></i>
+                    <div class="content">
+                    <div class="header">{crag.name}  </div>
+                    <div class="meta"><em>{crag.location}</em></div>
+                    <div class="extra content">
+                        <span class="center floated">
+                            <i onClick={(e) => handleDeleteFavorite(e, crag)} className="favorite" class="red large heart icon"></i>
+                            </span>
+                        </div>
+                    </div>
                 </div>
                 )
         }
     } else {
         return (
             <div onClick={() => handleClick(crag)} class="card">
-                <h2>{crag.name}  </h2>
-                <h3><em>{crag.location}</em></h3>
+                <div class="content">
+                    <div class="header">{crag.name}  </div>
+                    <div class="meta"><em>{crag.location}</em></div>
+                </div>
             </div>
         )
     }
