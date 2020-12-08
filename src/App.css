@@ -170,13 +170,14 @@ body {
   align-items: center;
   background-color: white;
   height: 300px;
-  padding-top: 30px;
+  padding-top: 50px;
   padding-left: 20px;
   padding-right: 20px;
+  border-radius: 0px 10px 10px 0px;
 }
 
 .profilePicBorder {
-  border-radius: 5px 0px 0px 5px;
+  border-radius: 10px 0px 0px 10px;
 }
 
 .userInfoContainer {

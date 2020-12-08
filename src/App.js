@@ -140,7 +140,8 @@ class App extends Component {
       })
       .then(res => res.json())
       .then(crags => {
-        this.setState({crags: crags, searchTerm: e.target[0].value});
+        let sorted_crags = crags.sort((a, b) => (a.name > b.name) ? 1 : -1)
+        this.setState({crags: sorted_crags, searchTerm: e.target[0].value});
         this.props.history.push(`/search?=${this.state.searchTerm}`)
       })
   }
