@@ -8,7 +8,7 @@ const ClimbCard = ({ handleClick, addWishClimb, deleteWishClimb, wishClimbs, add
                 let filtWishClimbs = wishClimbs.map(c => c.mp_id)
                 return (
                     <div onClick={() => handleClick(climb)} class="card">
-                        {(climb.imgSqSmall === "") ? <img height="100" width="100" src={process.env.PUBLIC_URL + '/images/climb_default_img.jpeg'} alt="No Climb Pic Available" /> : <img src={climb.imgSmallMed} alt={`Pic of ${climb.name}`} />}
+                        {(climb.imgSqSmall === "") ? <img width="290" height="290" src={process.env.PUBLIC_URL + '/images/climb_default_img.jpeg'} alt="No Climb Pic Available" /> : <img src={climb.imgSmallMed} alt={`Pic of ${climb.name}`} />}
                         <div class="content">
                             <div class="header">{climb.name}</div>
                             <div class="meta"><em>{climb.rating}</em></div>
@@ -21,7 +21,7 @@ const ClimbCard = ({ handleClick, addWishClimb, deleteWishClimb, wishClimbs, add
             } else {
                 return (
                     <div onClick={() => handleClick(climb)} class="card">
-                        {(climb.imgSqSmall === "") ? <img height="100" width="100" src={process.env.PUBLIC_URL + '/images/climb_default_img.jpeg'} alt="No Climb Pic Available" /> : <img src={climb.imgSmallMed} alt={`Pic of ${climb.name}`} />}
+                        {(climb.imgSqSmall === "") ? <img width="290" height="290" src={process.env.PUBLIC_URL + '/images/climb_default_img.jpeg'} alt="No Climb Pic Available" /> : <img src={climb.imgSmallMed} alt={`Pic of ${climb.name}`} />}
                         <div class="content">
                             <div class="header">{climb.name}</div>
                             <div class="meta"><em>{climb.rating}</em></div>
@@ -37,7 +37,7 @@ const ClimbCard = ({ handleClick, addWishClimb, deleteWishClimb, wishClimbs, add
                 let filtWishClimbs = wishClimbs.map(c => c.mp_id)
                 return (
                     <div onClick={() => handleClick(climb)} class="card">
-                        {(climb.imgSqSmall === "") ? <img height="100" width="100" src={process.env.PUBLIC_URL + '/images/climb_default_img.jpeg'} alt="No Climb Pic Available" /> : <img src={climb.imgSmallMed} alt={`Pic of ${climb.name}`} />}
+                        {(climb.imgSqSmall === "") ? <img width="290" height="290" src={process.env.PUBLIC_URL + '/images/climb_default_img.jpeg'} alt="No Climb Pic Available" /> : <img src={climb.imgSmallMed} alt={`Pic of ${climb.name}`} />}
                         <div class="content">
                             <div class="header">{climb.name}</div>
                             <div class="meta"><em>{climb.rating}</em></div>
@@ -50,7 +50,7 @@ const ClimbCard = ({ handleClick, addWishClimb, deleteWishClimb, wishClimbs, add
             } else {
                 return (
                     <div onClick={() => handleClick(climb)} class="card">
-                        {(climb.imgSqSmall === "") ? <img height="100" width="100" src={process.env.PUBLIC_URL + '/images/climb_default_img.jpeg'} alt="No Climb Pic Available" /> : <img src={climb.imgSmallMed} alt={`Pic of ${climb.name}`} />}
+                        {(climb.imgSqSmall === "") ? <img width="290" height="290" src={process.env.PUBLIC_URL + '/images/climb_default_img.jpeg'} alt="No Climb Pic Available" /> : <img src={climb.imgSmallMed} alt={`Pic of ${climb.name}`} />}
                         <div class="content">
                             <div class="header">{climb.name}</div>
                             <div class="meta"><em>{climb.rating}</em></div>
