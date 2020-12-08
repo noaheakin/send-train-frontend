@@ -10,6 +10,7 @@ const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteWishClimb, w
     return (
         <div>
             {(climbs.length > 0) ? [
+                <div class="ui visible sidebar">
                 <form onSubmit={filterClimbsSubmit}>
                     <input type="text" id="crag-search" name="crag" placeholder="Search for a climb" required />
                     <input type="submit" id="crag-search-submit" name="crag-search-submit"></input>
@@ -17,21 +18,10 @@ const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteWishClimb, w
                 <div className='select-discipline'>
                     <DisciplineSelect handleDisciplineChange={handleDisciplineChange} />
                 </div>,
-                // <div>
-                //     <SortSelect />
-                // </div>,
-                // <div>
-                //     {/* <Typography id="range-slider" gutterBottom>
-                //         Temperature range
-                //     </Typography> */}
-                //     <RangeSlider />
-                // </div>,
                 <div>
                     <MoreTesting climbs={climbs} handleSelectChange={handleSelectChange}/>
-                </div>,
-                // <div>
-                //     <TestSlider />
-                // </div>,
+                </div>
+                </div>
             ] : null}
             <div class="ui link cards">
                 {climbs.map(climb => <ClimbCard key={climb.id} climb={climb} handleClick={handleClick} addWishClimb={addWishClimb} deleteWishClimb={deleteWishClimb} wishClimbs={wishClimbs} addCompletedClimb={addCompletedClimb} deleteCompletedClimb={deleteCompletedClimb} completedClimbs={completedClimbs} user={user}/>)}

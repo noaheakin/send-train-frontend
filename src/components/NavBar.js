@@ -1,59 +1,67 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const NavBar = ({ user, handleLogOut, fetchCompletedClimbs, fetchTargetClimbs }) => {
   return (
-    <div style={{ borderBottom: '2px solid black', paddingBottom: '10px', marginBottom: '12px' }}>
-      <NavLink 
-        style={{ marginRight: '10px' }} 
+    <div style={{ backgroundColor: '#0E6EB8', paddingTop: '10px', paddingBottom: '10px', marginBottom: '12px', height: '56px' }}>
+      <Link class="ui blue button"
+        style={{ marginLeft: '10px', marginRight: '10px', float: 'left' }} 
         to="/"
       >
         Home
-      </NavLink>
-      {(user) ? [<NavLink onClick={() => fetchTargetClimbs()}
-        style={{ marginRight: '10px' }} 
+      </Link> 
+      {(user) ? [<Link onClick={() => fetchTargetClimbs()}
+        class="ui blue button"
+        style={{ marginRight: '10px', float: 'left' }} 
         to={`/${user}/wish-list`}
       >
         Wish List
-      </NavLink>,
-      <NavLink onClick={() => fetchCompletedClimbs()}
-        style={{ marginRight: '10px' }} 
+      </Link>,
+      <Link onClick={() => fetchCompletedClimbs()}
+        class="ui blue button"
+        style={{ marginRight: '10px', float: 'left' }} 
         to={`/${user}/climbs-log`}
       >
         Climbs Log
-      </NavLink>,
-      <NavLink
-        style={{ marginRight: '10px' }} 
+      </Link>,
+      <Link
+        class="ui blue button"
+        style={{ marginRight: '10px', float: 'left' }} 
         to={`/${user}/my-crags`}
       >
         My Crags
-      </NavLink>] : null}
+      </Link>] : null}
       {(user === null) ? 
-      [<NavLink 
-        style={{ marginRight: '10px' }} 
-        to="/log-in"
-      >
-        Log In
-      </NavLink>, 
-      <NavLink 
-        style={{ marginRight: '10px' }} 
+      [<Link 
+        class="ui blue button"
+        style={{ marginRight: '10px', float: 'right' }} 
         to="/sign-up"
       >
         Sign Up
-      </NavLink>] :
-      [<NavLink
-        style={{ marginRight: '10px' }} 
+      </Link>,
+      <Link 
+        class="ui blue button"
+        style={{ marginRight: '10px', float: 'right' }} 
+        to="/log-in"
+      >
+        Log In
+      </Link> 
+      ] :
+      [<Link class="ui blue button"
+      onClick={handleLogOut}
+      style={{ marginRight: '10px', float: 'right' }} 
+      to="/"
+    >
+      Log Out
+    </Link>,
+    <Link class="ui blue button"
+        style={{ marginRight: '10px', float: 'right' }} 
         key={user}
         to={`/${user}/profile`}
       >
         View Profile
-      </NavLink>, 
-      <NavLink onClick={handleLogOut}
-        style={{ marginRight: '10px' }} 
-        to="/"
-      >
-        Log Out
-      </NavLink>]
+      </Link> 
+      ]
     }
     </div>
   );

@@ -11,7 +11,7 @@ const CragsContainer = ({ handleClick, handleAddFavorite, handleDeleteFavorite, 
         )
     } else {
         return (
-            <div className="ui link cards">
+            <div class="ui link cards">
                 {crags.map(crag => <CragCard key={crag.id} crag={crag} handleClick={handleClick} handleAddFavorite={handleAddFavorite} handleDeleteFavorite={handleDeleteFavorite} userCrags={userCrags} user={user} />)}
             </div>
         )

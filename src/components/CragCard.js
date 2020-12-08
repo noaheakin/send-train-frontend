@@ -6,9 +6,15 @@ const CragCard = ({ handleClick, handleAddFavorite, handleDeleteFavorite, userCr
             let filtCrags = userCrags.map(crag => `crag_id: ${crag.id}`)
         return (
             <div onClick={() => handleClick(crag)} class="card">
-                <h2>{crag.name}  </h2>
-                <h3><em>{crag.location}</em></h3>
-                {filtCrags.includes(`crag_id: ${crag.id}`) ?  <i onClick={(e) => handleDeleteFavorite(e, crag)} className="favorite" class="red large heart icon"></i> : <i onClick={(e) => handleAddFavorite(e, crag)} class="black large heart outline icon"></i>}
+                <div class="content">
+                    <div class="header">{crag.name}  </div>
+                    <div class="meta"><em>{crag.location}</em></div>
+                    <div class="extra content">
+                        <span class="center floated">
+                            {filtCrags.includes(`crag_id: ${crag.id}`) ?  <i onClick={(e) => handleDeleteFavorite(e, crag)} className="favorite" class="red large heart icon"></i> : <i onClick={(e) => handleAddFavorite(e, crag)} class="black large heart outline icon"></i>}
+                        </span>
+                    </div>
+                </div>
             </div>
         )
         } else {

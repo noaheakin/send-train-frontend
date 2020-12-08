@@ -22,17 +22,50 @@ class LogIn extends Component {
 
     render () {
         return (
-            <div className='login'>
-                <form onSubmit={this.handleLogin}>
-                    <h3>Log In:</h3>
-                    <label htmlFor="username">Username:</label>
-                    <input type="text" name="username" value={this.state.username} onChange={this.handleChange} required /><br></br>
-                    <label htmlFor="password">Password:</label>
-                    <input type="password" name="password" value={this.state.password} onChange={this.handleChange} required /><br></br><br></br>
-                    <input type="submit" value="Log In"></input>
-                    <Link to='/sign-up'> Not a User? Sign Up!</Link>
-                </form>
+            <div className="overlay">
+                <div class="ui middle aligned center aligned grid">
+                <div className="loginWindow">
+                    <h2 class="ui image header">
+                    </h2>
+                    <form class="ui large form" onSubmit={this.handleLogin}>
+                        <div class="ui stacked segment">
+                        <h3>
+                            Log In to your account
+                        </h3>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="user icon"></i>
+                                    <input type="text" name="username" value={this.state.username} onChange={this.handleChange} placeholder="Username" required/>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="lock icon"></i>
+                                    <input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} required/>
+                                </div>
+                            </div>
+                            <input type="submit" value="Log In" class="ui fluid large teal submit button" />
+                        </div>  
+                        <div class="ui error message"></div>
+                    </form>
+                    <div class="ui message">
+                        New to us? <a href="#">Sign Up</a>
+                    </div>
+                </div>
+                </div>
             </div>
+
+            // <div className='login'>
+            //     <form onSubmit={this.handleLogin}>
+            //         <h3>Log In:</h3>
+            //         <label htmlFor="username">Username:</label>
+            //         <input type="text" name="username" value={this.state.username} onChange={this.handleChange} required /><br></br>
+            //         <label htmlFor="password">Password:</label>
+            //         <input type="password" name="password" value={this.state.password} onChange={this.handleChange} required /><br></br><br></br>
+            //         <input type="submit" value="Log In"></input>
+            //         <Link to='/sign-up'> Not a User? Sign Up!</Link>
+            //     </form>
+            // </div>
         )
     } 
 }
