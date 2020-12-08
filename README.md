@@ -7,7 +7,7 @@ SendTrain allows users to discover climbing areas and new routes in a visual way
 in your terminal, make a repository called `send-train` and then jump into this repository. Follow the website https://github.com/noaheakin/send-train-frontend. Fork the repository and clone this repository down to your terminal to get the frontend repository. Follow the website https://github.com/noaheakin/send-train-backend. Fork and clone this repository down to your terminal to get the backend repository. In your local backend repo, run:  
 
 ```ruby
-install bundle
+bundle install
 ```
 
 In your local frontend repo, run:
