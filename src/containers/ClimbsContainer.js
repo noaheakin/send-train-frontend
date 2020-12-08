@@ -20,20 +20,20 @@ const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteWishClimb, w
                 // <div>
                 //     <SortSelect />
                 // </div>,
-                <div>
-                    {/* <Typography id="range-slider" gutterBottom>
-                        Temperature range
-                    </Typography> */}
-                    <RangeSlider />
-                </div>,
+                // <div>
+                //     {/* <Typography id="range-slider" gutterBottom>
+                //         Temperature range
+                //     </Typography> */}
+                //     <RangeSlider />
+                // </div>,
                 <div>
                     <MoreTesting climbs={climbs} handleSelectChange={handleSelectChange}/>
                 </div>,
                 // <div>
                 //     <TestSlider />
                 // </div>,
-            ] : null }
-            <div className="climbContainer">
+            ] : null}
+            <div class="ui link cards">
                 {climbs.map(climb => <ClimbCard key={climb.id} climb={climb} handleClick={handleClick} addWishClimb={addWishClimb} deleteWishClimb={deleteWishClimb} wishClimbs={wishClimbs} addCompletedClimb={addCompletedClimb} deleteCompletedClimb={deleteCompletedClimb} completedClimbs={completedClimbs} user={user}/>)}
             </div>
         </div>
