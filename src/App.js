@@ -125,6 +125,17 @@ class App extends Component {
     localStorage.clear()
   }
 
+  deleteUser = () => {
+    const token = localStorage.getItem('token')
+    fetch(API + `/users/${this.state.userID}`, {
+      method: "DELETE",
+      headers: {
+        'Authorization': `Bearer ${token}`
+    }})
+    this.handleLogOut()
+    this.props.history.push('/')
+  }
+
   handleSearchSubmit = e => {
     e.preventDefault()
     console.log(this.props)
@@ -372,7 +383,6 @@ class App extends Component {
   }
 
   editProfile = (e) => {
-    debugger
     e.preventDefault()
     const token = localStorage.getItem('token')
     fetch(`http://localhost:3000/users/${this.state.userID}`, {
@@ -527,6 +537,7 @@ class App extends Component {
     }
   }
 
+  
   // closeOverlay = (e) => {
   //   e.stopPropagation()
   //   this.props.history.push('/')
@@ -549,7 +560,7 @@ class App extends Component {
             <Route exact path={`/${this.state.user}/my-crags`} render={() => <UserCragsContainer crags={this.state.userCrags} handleClick={this.handleCragClick} handleDeleteFavorite={this.handleDeleteFavorite} user={this.state.user}/>} />
             <Route exact path={`/${this.state.user}/climbs-log`} render={() => <ClimbsContainer climbs={this.state.displayCompletedClimbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} deleteWishClimb={this.deleteWishClimb} wishClimbs={this.state.wishClimbs} addCompletedClimb={this.addCompletedClimb} deleteCompletedClimb={this.deleteCompletedClimb} completedClimbs={this.state.completedClimbs} handleSelectChange={this.handleSelectChange} handleDisciplineChange={this.handleDisciplineChange} user={this.state.user}/>} />
             <Route exact path={`/${this.state.user}/wish-list`} render={() => <ClimbsContainer climbs={this.state.displayWishClimbs} handleClick={this.handleClimbClick} addWishClimb={this.addWishClimb} deleteWishClimb={this.deleteWishClimb} wishClimbs={this.state.wishClimbs} addCompletedClimb={this.addCompletedClimb} deleteCompletedClimb={this.deleteCompletedClimb} completedClimbs={this.state.completedClimbs} handleSelectChange={this.handleSelectChange} handleDisciplineChange={this.handleDisciplineChange} user={this.state.user}/>} />
-            <Route exact path={`/${this.state.user}/profile`} render={() => <Profile user={this.state.displayUser} displayEditPage={this.displayEditPage} />} />
+            <Route exact path={`/${this.state.user}/profile`} render={() => <Profile user={this.state.displayUser} displayEditPage={this.displayEditPage} deleteUser={this.deleteUser} />} />
             <Route exact path={`/${this.state.user}/edit-profile`} render={() => <EditProfile user={this.state.displayUser} editProfile={this.editProfile}/>} />
             <Route render={() => <NotFound />} />
           </Switch>

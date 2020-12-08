@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Profile = ({user, displayEditPage}) => {
+const Profile = ({user, displayEditPage, deleteUser}) => {
 
     return (
         <div class="ui three column doubling stackable center aligned grid container">
@@ -21,6 +21,7 @@ const Profile = ({user, displayEditPage}) => {
                     <div class="extra">
                         <p>{user.location}</p>
                         <button class="ui orange button" onClick={() => displayEditPage()}>Edit Profile</button>
+                        <button class="ui grey button" onClick={() => deleteUser()}>Delete Account</button>
                     </div>
                 </div>
                 </div>
