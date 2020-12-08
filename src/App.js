@@ -97,12 +97,7 @@ class App extends Component {
     })
     .then(res => res.json())
     .then(data => {
-      console.log(data)
-      this.setState({user: data.user, token: data.token}, ()  =>{
-        console.log(this.state)
-        console.log(this.props)
-      }
-        )
+      this.setState({user: data.user, token: data.token})
     })
   }
 
