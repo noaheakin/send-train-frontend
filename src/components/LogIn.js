@@ -25,8 +25,6 @@ class LogIn extends Component {
             <div className="overlay">
                 <div class="ui middle aligned center aligned grid">
                 <div className="loginWindow">
-                    <h2 class="ui image header">
-                    </h2>
                     <form class="ui large form" onSubmit={this.handleLogin}>
                         <div class="ui stacked segment">
                         <h3>
@@ -44,12 +42,12 @@ class LogIn extends Component {
                                     <input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} required/>
                                 </div>
                             </div>
-                            <input type="submit" value="Log In" class="ui fluid large teal submit button" />
+                            <input type="submit" value="Log In" class="ui fluid large orange submit button" />
                         </div>  
                         <div class="ui error message"></div>
                     </form>
                     <div class="ui message">
-                        New to us? <a href="#">Sign Up</a>
+                        New to us? <Link to='/sign-up'>Sign Up!</Link>
                     </div>
                 </div>
                 </div>

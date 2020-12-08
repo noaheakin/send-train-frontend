@@ -79,20 +79,20 @@ class App extends Component {
     })
   }
 
-  handleSignUp = e => {  
-    console.log(e)
+  handleSignUp = e => { 
     fetch('http://localhost:3000/register',{
       method:'POST',
       headers:{
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: e.target[0].value,
-        username: e.target[1].value,
-        password: e.target[2].value,
+        username: e.target[0].value,
+        password: e.target[1].value,
+        name: e.target[2].value,
         profile_pic: e.target[3].value,
-        bio: e.target[4].value,
-        location: e.target[5].value
+        location: e.target[4].value,
+        bio: e.target[5].value
+        
       })
     })
     .then(res => res.json())
@@ -522,6 +522,11 @@ class App extends Component {
       }
     }
   }
+
+  // closeOverlay = (e) => {
+  //   e.stopPropagation()
+  //   this.props.history.push('/')
+  // }
 
   render() {
     return (
