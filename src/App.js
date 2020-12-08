@@ -371,6 +371,7 @@ class App extends Component {
   }
 
   editProfile = (e) => {
+    debugger
     e.preventDefault()
     const token = localStorage.getItem('token')
     fetch(`http://localhost:3000/users/${this.state.userID}`, {
@@ -381,11 +382,11 @@ class App extends Component {
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        profile_pic: e.target.profile_pic.value,
-        bio: e.target.bio.value,  
-        location: e.target.location.value,
-        username: e.target.username.value,
-        name: e.target.name.value
+        profile_pic: e.target[2].value,
+        bio: e.target[4].value,  
+        location: e.target[3].value,
+        username: e.target[0].value,
+        name: e.target[1].value
       })
     })
     .then(res => res.json())

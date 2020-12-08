@@ -160,3 +160,21 @@ body {
 .navProfilePic {
   border-radius: 20px;
 }
+
+.profileContainer {
+  width: 500px;
+}
+
+.profileInfo {
+  width: 400px;
+  align-items: center;
+  background-color: white;
+}
+
+.profilePicBorder {
+  border-radius: 5px 0px 0px 5px;
+}
+
+.userInfoContainer {
+  background-color: white;
+}
