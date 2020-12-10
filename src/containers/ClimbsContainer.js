@@ -5,6 +5,7 @@ import DisciplineSelect from '../components/filters/DisciplineSelect';
 import SortSelect from '../components/filters/SortSelect';
 import TestSlider from '../components/filters/TestSlider';
 import MoreTesting from '../components/filters/MoreTesting';
+import ClimbSearch from '../components/filters/ClimbSearch';
 
 const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteWishClimb, wishClimbs, deleteCompletedClimb, addCompletedClimb, completedClimbs, filterClimbsSubmit, handleSelectChange, handleDisciplineChange, user }) => {
     
@@ -19,10 +20,9 @@ const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteWishClimb, w
                 <div>
                     <MoreTesting climbs={climbs} handleSelectChange={handleSelectChange}/>
                 </div>
-                {/* <form onSubmit={filterClimbsSubmit}>
-                    <div type="text" id="crag-search" name="crag" placeholder="Search for a climb" required />
-                    <input type="submit" id="crag-search-submit" name="crag-search-submit"></input>
-                </form> */}
+                <div>
+                    <ClimbSearch />
+                </div>
                 </div>
             ] : null}
             <div class="ui link cards">
