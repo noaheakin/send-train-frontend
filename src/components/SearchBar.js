@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 
 
-const SearchBar = ( { handleSearchSubmit, user, climbs } ) => {
+const SearchBar = ( { handleSearchSubmit} ) => {
     return (
         <div style={{marginTop: '60px', marginBottom: '30px'}}>
             {/* <div>{(!user) ? null : <h2>Welcome, {user}!</h2>}

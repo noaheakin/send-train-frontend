@@ -7,6 +7,10 @@ import TestSlider from '../components/filters/TestSlider';
 import MoreTesting from '../components/filters/MoreTesting';
 import ClimbSearch from '../components/filters/ClimbSearch';
 
+
+// add climb discipline filter
+
+
 const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteWishClimb, wishClimbs, deleteCompletedClimb, addCompletedClimb, completedClimbs, filterClimbsSubmit, handleSelectChange, handleDisciplineChange, user }) => {
     
     return (
@@ -21,7 +25,7 @@ const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteWishClimb, w
                     <MoreTesting climbs={climbs} handleSelectChange={handleSelectChange}/>
                 </div>
                 <div>
-                    <ClimbSearch />
+                    {/* <ClimbSearch /> */}
                 </div>
                 </div>
             ] : null}
