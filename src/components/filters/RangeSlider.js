@@ -1,3 +1,8 @@
+// Range slider with two tabs to bookend desired difficulty range. 
+// This particular slider is just for the bouldering discipline
+// Need to learn more about hooks to derive values which can then be used
+// to filter searches to the API
+
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';

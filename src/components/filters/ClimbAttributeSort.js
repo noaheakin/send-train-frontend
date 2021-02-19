@@ -1,3 +1,6 @@
+// Modified Materiul UI's dropdown form so that it 1) no longer relies on hooks, and 
+// 2) uses a functional component rather than a class component
+
 import React from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -6,16 +9,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-// const useStyles = makeStyles((theme) => ({
-//   formControl: {
-//     margin: theme.spacing(1),
-//     minWidth: 120,
-//   },
-// }));
-
-// const classes = useStyles();
-
-const MoreTesting =({handleSelectChange}) => {
+const ClimbAttributeSort =({handleSelectChange}) => {
 
   return (
     <div>
@@ -41,4 +35,4 @@ const MoreTesting =({handleSelectChange}) => {
   )
 }
 
-export default MoreTesting
+export default ClimbAttributeSort

@@ -1,3 +1,8 @@
+// This is the original format of Material UI's dropdown select that I adapted
+// to create the ClimbAttributeSort component. I'm leaving this as a reference for 
+// React hooks in case that is helpful when integrating state management with Redux
+// later
+
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';

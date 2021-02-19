@@ -3,8 +3,7 @@ import ClimbCard from '../components/ClimbCard';
 import RangeSlider from '../components/filters/RangeSlider';
 import DisciplineSelect from '../components/filters/DisciplineSelect';
 import SortSelect from '../components/filters/SortSelect';
-import TestSlider from '../components/filters/TestSlider';
-import MoreTesting from '../components/filters/MoreTesting';
+import ClimbAttributeSort from '../components/filters/ClimbAttributeSort';
 import ClimbSearch from '../components/filters/ClimbSearch';
 
 
@@ -22,10 +21,16 @@ const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteWishClimb, w
                     <DisciplineSelect handleDisciplineChange={handleDisciplineChange} />
                 </div>
                 <div>
-                    <MoreTesting climbs={climbs} handleSelectChange={handleSelectChange}/>
+                    <ClimbAttributeSort climbs={climbs} handleSelectChange={handleSelectChange}/>
                 </div>
                 <div>
-                    {/* <ClimbSearch /> */}
+                    <ClimbSearch />
+                </div>
+                <div>
+                    <RangeSlider />
+                </div>
+                <div>
+                    <SortSelect />
                 </div>
                 </div>
             ] : null}
