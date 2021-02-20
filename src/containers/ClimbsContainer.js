@@ -1,8 +1,6 @@
 import React from 'react';
 import ClimbCard from '../components/ClimbCard';
-import RangeSlider from '../components/filters/RangeSlider';
 import DisciplineSelect from '../components/filters/DisciplineSelect';
-import SortSelect from '../components/filters/SortSelect';
 import ClimbAttributeSort from '../components/filters/ClimbAttributeSort';
 import ClimbSearch from '../components/filters/ClimbSearch';
 
@@ -23,15 +21,11 @@ const ClimbsContainer = ({ climbs, handleClick, addWishClimb, deleteWishClimb, w
                 <div>
                     <ClimbAttributeSort climbs={climbs} handleSelectChange={handleSelectChange}/>
                 </div>
-                <div>
-                    <ClimbSearch />
-                </div>
-                <div>
-                    <RangeSlider />
-                </div>
-                <div>
-                    <SortSelect />
-                </div>
+                <span>
+                    <div>
+                        <ClimbSearch />
+                    </div>
+                </span>
                 </div>
             ] : null}
             <div class="ui link cards">

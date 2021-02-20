@@ -60,7 +60,7 @@ class App extends Component {
 
   handleLogIn = (info) => {  
     
-    fetch('http://localhost:3000/login',{
+    fetch(API + '/login',{
       method:'POST',
       headers:{
         'Content-Type': 'application/json'
